@@ -3,6 +3,7 @@ package com.example.nikhil.branchonmobile;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,12 +12,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class Registration extends AppCompatActivity {
     private Button register,upload;
@@ -74,15 +77,34 @@ public class Registration extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //if(requestCode==PICK_IMAGE_REQUEST)
-        Log.e("x",""+resultCode);
+        //Log.e("x",""+resultCode);
         if (requestCode == 1 && resultCode == RESULT_OK) {
-            /*Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            ByteArrayOutputStream bo = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG,100,bo);
-            byte[] ba=bo.toByteArray();
-            img = Base64.encodeToString(ba, Base64.DEFAULT);
-            Log.e("image",img);*/
+            Uri uri = data.getData();
+            if(uri!=null) {
+                //Log.e("Only cam", uri.toString());
+                try {
+                    Bitmap b = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
+                    ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                    b.compress(Bitmap.CompressFormat.JPEG, 70, bo);
+                    byte[] ba = bo.toByteArray();
+                    img = Base64.encodeToString(ba, Base64.DEFAULT);
+                    //Log.e("yo", img);
+                    //ImageView iv = (ImageView) findViewById(R.id.imageView);
+                    //iv.setImageBitmap(b);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+                else
+                {
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    ByteArrayOutputStream bo = new ByteArrayOutputStream();
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bo);
+                    byte[] ba = bo.toByteArray();
+                    img = Base64.encodeToString(ba, Base64.DEFAULT);
+                    //Log.e("image",img);
+                }
         }
     }
 }
