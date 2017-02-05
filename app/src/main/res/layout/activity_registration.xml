@@ -57,14 +57,20 @@
                 android:id="@+id/editText8"
                 android:hint="Phone Number" />
 
-            <EditText
+            <TextView
+                android:text="Not Uploaded"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:id="@+id/editText9"
-                android:hint="PAN Number" />
+                android:id="@+id/textView"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+
+            <Button
+                android:text="Upload PAN"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/button3"
+                android:layout_marginBottom="20dp" />
 
             <EditText
                 android:layout_width="match_parent"

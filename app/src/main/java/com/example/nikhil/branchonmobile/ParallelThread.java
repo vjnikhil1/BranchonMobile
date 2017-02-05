@@ -1,7 +1,9 @@
 package com.example.nikhil.branchonmobile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -37,8 +39,9 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             String last_name = params[2];
             String email = params[3];
             String mobile = params[4];
-            String pan = params[5];
-            String address = params[6];
+            String acc_type = params[5];
+            String pan = params[6];
+            String address = params[7];
             try {
                 URL url = new URL(url_register);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -51,6 +54,7 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                         URLEncoder.encode("last_name", "UTF-8") + "=" + URLEncoder.encode(last_name, "UTF-8") + "&" +
                         URLEncoder.encode("email", "UTF-8") + "=" + URLEncoder.encode(email, "UTF-8") + "&" +
                         URLEncoder.encode("mobile", "UTF-8") + "=" + URLEncoder.encode(mobile, "UTF-8") + "&" +
+                        URLEncoder.encode("acc_type", "UTF-8") + "=" + URLEncoder.encode(acc_type, "UTF-8") + "&" +
                         URLEncoder.encode("pan", "UTF-8") + "=" + URLEncoder.encode(pan, "UTF-8") + "&" +
                         URLEncoder.encode("address", "UTF-8") + "=" + URLEncoder.encode(address, "UTF-8");
                 bufferedWriter.write(post);
@@ -79,8 +83,15 @@ class ParallelThread extends AsyncTask<String, Void, String> {
     }
 
     @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        Toast.makeText(c,"Please Wait",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        Toast.makeText(c,result,Toast.LENGTH_LONG).show();
+        Toast.makeText(c,s,Toast.LENGTH_LONG).show();
+        Log.e("test",s);
     }
 }
