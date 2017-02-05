@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -19,7 +21,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Registration extends AppCompatActivity {
     private Button register,upload;
@@ -27,6 +32,9 @@ public class Registration extends AppCompatActivity {
     private RadioButton rb;
     private EditText name,lname,email,mobile,pan,address,acctype;
     private String img;
+    private Uri photoURI;
+    String mCurrentPhotoPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +67,17 @@ public class Registration extends AppCompatActivity {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                }
+                if (photoFile != null) {
+                    photoURI = FileProvider.getUriForFile(Registration.this,
+                            "com.example.nikhil.branchonmobile",
+                            photoFile);
+                    takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                }
 
                 String pickTitle = "Select or take a new Picture"; // Or get from strings.xml
                 Intent chooserIntent = Intent.createChooser(pickPhoto, pickTitle);
@@ -80,12 +99,14 @@ public class Registration extends AppCompatActivity {
         //Log.e("x",""+resultCode);
         if (requestCode == 1 && resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            if(uri!=null) {
+            if(uri==null) {
+                uri=photoURI;
+            }
                 //Log.e("Only cam", uri.toString());
                 try {
                     Bitmap b = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
                     ByteArrayOutputStream bo = new ByteArrayOutputStream();
-                    b.compress(Bitmap.CompressFormat.JPEG, 70, bo);
+                    b.compress(Bitmap.CompressFormat.JPEG, 50, bo);
                     byte[] ba = bo.toByteArray();
                     img = Base64.encodeToString(ba, Base64.DEFAULT);
                     //Log.e("yo", img);
@@ -94,8 +115,7 @@ public class Registration extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }
-                else
+                /*else
                 {
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
@@ -104,7 +124,22 @@ public class Registration extends AppCompatActivity {
                     byte[] ba = bo.toByteArray();
                     img = Base64.encodeToString(ba, Base64.DEFAULT);
                     //Log.e("image",img);
-                }
+                }*/
         }
+    }
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 }
