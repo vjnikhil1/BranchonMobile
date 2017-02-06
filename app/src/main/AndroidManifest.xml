@@ -9,6 +9,7 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 
     <application
         android:allowBackup="true"
@@ -36,10 +37,14 @@
         <activity
             android:name=".Registration"
             android:label="@string/title_activity_registration"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FingerprintActivity"
+            android:label="@string/title_activity_fingerprint"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -2,6 +2,7 @@ package com.example.nikhil.branchonmobile;
 
 import android.content.Context;
 import android.content.Intent;
+import android.hardware.fingerprint.FingerprintManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -133,6 +134,10 @@ class ParallelThread extends AsyncTask<String, Void, String> {
         Toast.makeText(c,s,Toast.LENGTH_LONG).show();
         else if(route=="login"){
             Toast.makeText(c,s,Toast.LENGTH_LONG).show();
+            GlobVar gv = new GlobVar();
+            gv.setAcc_no(s);
+            Intent intent = new Intent(c, FingerprintActivity.class);
+            c.startActivity(intent);
         }
         Log.e("test",s);
     }
