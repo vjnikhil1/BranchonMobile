@@ -42,6 +42,7 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             String acc_type = params[5];
             String pan = params[6];
             String address = params[7];
+            String password = params[8];
             try {
                 URL url = new URL(url_register);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -56,6 +57,7 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                         URLEncoder.encode("mobile", "UTF-8") + "=" + URLEncoder.encode(mobile, "UTF-8") + "&" +
                         URLEncoder.encode("acc_type", "UTF-8") + "=" + URLEncoder.encode(acc_type, "UTF-8") + "&" +
                         URLEncoder.encode("pan", "UTF-8") + "=" + URLEncoder.encode(pan, "UTF-8") + "&" +
+                        URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8") + "&" +
                         URLEncoder.encode("address", "UTF-8") + "=" + URLEncoder.encode(address, "UTF-8");
                 bufferedWriter.write(post);
                 bufferedWriter.flush();

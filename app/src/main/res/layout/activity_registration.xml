@@ -58,12 +58,6 @@
                 android:id="@+id/editText8"
                 android:hint="Phone Number" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/alert_dark_frame"
-                android:id="@+id/imageView" />
-
             <TextView
                 android:text="Not Uploaded"
                 android:layout_width="match_parent"
@@ -117,6 +111,14 @@
                     android:layout_marginBottom="20dp"
                     android:id="@+id/radioButton2" />
             </RadioGroup>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/editText4"
+                android:hint="Password" />
 
             <Button
                 android:text="Register"

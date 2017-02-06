@@ -3,6 +3,7 @@ package com.example.nikhil.branchonmobile;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,11 +32,10 @@ public class Registration extends AppCompatActivity {
     private Button register,upload;
     private RadioGroup rg;
     private RadioButton rb;
-    private EditText name,lname,email,mobile,pan,address,acctype;
+    private EditText name,lname,email,mobile,pan,address,password;
     private String img;
     private Uri photoURI;
     String mCurrentPhotoPath;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,10 +54,11 @@ public class Registration extends AppCompatActivity {
                 email = (EditText) findViewById(R.id.editText7);
                 mobile = (EditText) findViewById(R.id.editText8);
                 address = (EditText) findViewById(R.id.editText10);
+                password = (EditText) findViewById(R.id.editText4);
                 ParallelThread pt = new ParallelThread(Registration.this);
                 pt.execute("register",name.getText().toString(),lname.getText().toString(),
                         email.getText().toString(),mobile.getText().toString(),rb.getText().toString(),
-                        img,address.getText().toString());
+                        img,address.getText().toString(),password.getText().toString());
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
@@ -109,12 +111,16 @@ public class Registration extends AppCompatActivity {
                     b.compress(Bitmap.CompressFormat.JPEG, 50, bo);
                     byte[] ba = bo.toByteArray();
                     img = Base64.encodeToString(ba, Base64.DEFAULT);
+                    TextView panStatus = (TextView) findViewById(R.id.textView);
+                    panStatus.setText("Upload Success");
+                    panStatus.setTextColor(Color.parseColor("#4CAF50"));
                     //Log.e("yo", img);
                     //ImageView iv = (ImageView) findViewById(R.id.imageView);
                     //iv.setImageBitmap(b);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
                 /*else
                 {
                     Bundle extras = data.getExtras();
