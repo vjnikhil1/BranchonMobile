@@ -16,6 +16,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -35,7 +37,6 @@ import javax.crypto.SecretKey;
 
 public class FingerprintActivity extends AppCompatActivity {
     private KeyStore keyStore;
-    // Variable used for storing the key in the Android Keystore container
     private static final String KEY_NAME = "Nikhil";
     private Cipher cipher;
     private TextView textView;
@@ -43,6 +44,8 @@ public class FingerprintActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_fingerprint);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
