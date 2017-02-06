@@ -29,11 +29,11 @@ class ParallelThread extends AsyncTask<String, Void, String> {
     ParallelThread(Context c){
         this.c = c;
     }
-
+    String route;
     @Override
     protected String doInBackground(String... params) {
-        String route = params[0];
         String url_register = "http://bom.pe.hu/register.php";
+        route = params[0];
         if (route == "register") {
             String first_name = params[1];
             String last_name = params[2];
@@ -81,6 +81,42 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
             }
         }
+        else if(route=="login"){
+            String url_loginauth = "http://bom.pe.hu/loginauth.php";
+            String acc_no = params[1];
+            String password = params[2];
+            try {
+                URL url = new URL(url_loginauth);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("POST");
+                con.setDoOutput(true);
+                con.setDoInput(true);
+                OutputStream os = con.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                String post = URLEncoder.encode("acc_no", "UTF-8") + "=" + URLEncoder.encode(acc_no, "UTF-8") + "&" +
+                        URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                bufferedWriter.write(post);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                os.close();
+                InputStream is = con.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                result = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                is.close();
+                con.disconnect();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return result;
     }
 
@@ -93,7 +129,11 @@ class ParallelThread extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
+        if(route=="register")
         Toast.makeText(c,s,Toast.LENGTH_LONG).show();
+        else if(route=="login"){
+            Toast.makeText(c,s,Toast.LENGTH_LONG).show();
+        }
         Log.e("test",s);
     }
 }
