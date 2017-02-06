@@ -136,8 +136,10 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             Toast.makeText(c,s,Toast.LENGTH_LONG).show();
             GlobVar gv = new GlobVar();
             gv.setAcc_no(s);
-            Intent intent = new Intent(c, FingerprintActivity.class);
-            c.startActivity(intent);
+            if(!s.equals("Wrong Credentials")) {
+                Intent intent = new Intent(c, FingerprintActivity.class);
+                c.startActivity(intent);
+            }
         }
         Log.e("test",s);
     }
