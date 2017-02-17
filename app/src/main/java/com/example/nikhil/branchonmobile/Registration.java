@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -29,7 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Registration extends AppCompatActivity {
-    private Button register,upload;
+    private Button register;
+    private ImageButton upload;
     private RadioGroup rg;
     private RadioButton rb;
     private EditText name,lname,email,mobile,pan,address,password;
@@ -41,7 +43,7 @@ public class Registration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         register = (Button) findViewById(R.id.button2);
-        upload = (Button) findViewById(R.id.button3);
+        upload = (ImageButton) findViewById(R.id.button3);
         rg = (RadioGroup) findViewById(R.id.radioGroup);
         register.setOnClickListener(new View.OnClickListener() {
             @Override

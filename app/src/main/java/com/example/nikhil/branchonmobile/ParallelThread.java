@@ -130,8 +130,11 @@ class ParallelThread extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        if(route=="register")
-        Toast.makeText(c,s,Toast.LENGTH_LONG).show();
+        if(route=="register") {
+            Toast.makeText(c, s, Toast.LENGTH_LONG).show();
+            //Intent ij = new Intent(c, FingerprintActivity.class);
+            //c.startActivity(ij);
+        }
         else if(route=="login"){
             Toast.makeText(c,s,Toast.LENGTH_LONG).show();
             GlobVar gv = new GlobVar();

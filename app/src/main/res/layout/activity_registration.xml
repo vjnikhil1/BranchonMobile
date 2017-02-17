@@ -21,7 +21,42 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" >
+            <TextView
+                android:text="Type of Account"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView4"
+                android:textSize="18sp"
+                android:layout_marginBottom="20dp"
+                android:textAlignment="center" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
 
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100dp"
+                android:id="@+id/radioGroup">
+            <RadioButton
+                android:text="Savings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:checked="true"
+                android:id="@+id/radioButton"
+                android:layout_weight="0.5"/>
+
+            <RadioButton
+                android:text="Current"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:id="@+id/radioButton2"
+                android:layout_weight="0.5"/>
+            </RadioGroup>
+        </LinearLayout>
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -44,6 +79,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/editText9"
+                android:hint="DOB (DD/MM/YY)" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
                 android:inputType="textEmailAddress"
                 android:ems="10"
                 android:id="@+id/editText7"
@@ -57,22 +101,6 @@
                 android:ems="10"
                 android:id="@+id/editText8"
                 android:hint="Phone Number" />
-
-            <TextView
-                android:text="Not Uploaded"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView"
-                android:textAlignment="center"
-                android:textSize="14sp" />
-
-            <Button
-                android:text="Upload PAN"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/button3"
-                android:layout_marginBottom="20dp" />
-
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,36 +110,6 @@
                 android:id="@+id/editText10"
                 android:hint="Address" />
 
-            <TextView
-                android:text="Type of Account"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/textView4"
-                android:textSize="18sp"
-                android:layout_marginBottom="20dp"
-                android:textAlignment="center" />
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="100dp"
-                android:id="@+id/radioGroup">
-                <RadioButton
-                    android:text="Savings"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:checked="true"
-                    android:id="@+id/radioButton" />
-
-                <RadioButton
-                    android:text="Current"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:id="@+id/radioButton2" />
-            </RadioGroup>
-
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,6 +117,63 @@
                 android:ems="10"
                 android:id="@+id/editText4"
                 android:hint="Password" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <TextView
+                    android:text="Upload Pan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:layout_weight="0.75"
+                    android:layout_gravity="center"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_menu_camera"
+                    android:id="@+id/button3" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <TextView
+                    android:text="Upload Aadhaar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView1"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:layout_weight="0.75"
+                    android:layout_gravity="center"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_menu_camera"
+                    android:id="@+id/button4" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
+                <TextView
+                    android:text="Upload Signature"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView2"
+                    android:textAlignment="center"
+                    android:textSize="14sp"
+                    android:layout_weight="0.75"
+                    android:layout_gravity="center"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_menu_camera"
+                    android:id="@+id/button5" />
+            </LinearLayout>
 
             <Button
                 android:text="Register"
