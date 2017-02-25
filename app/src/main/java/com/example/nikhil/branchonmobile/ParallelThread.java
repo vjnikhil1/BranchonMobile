@@ -1,5 +1,6 @@
 package com.example.nikhil.branchonmobile;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.fingerprint.FingerprintManager;
@@ -27,13 +28,15 @@ import java.net.URLEncoder;
 class ParallelThread extends AsyncTask<String, Void, String> {
     Context c;
     String result = "";
+    ProgressDialog dialog;
     ParallelThread(Context c){
         this.c = c;
+        dialog = new ProgressDialog(c);
     }
     String route;
     @Override
     protected String doInBackground(String... params) {
-        String url_register = "http://bom.pe.hu/register.php";
+        String url_register = "http://bom.pe.hu/register.php";//"http://52.33.154.120:8080/register.php";
         route = params[0];
         if (route == "register") {
             String first_name = params[1];
@@ -44,6 +47,10 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             String pan = params[6];
             String address = params[7];
             String password = params[8];
+            String panNo = params[9];
+            String aadhaarNo = params[10];
+            String aadhaarImg = params[11];
+            String signatureImg = params[12];
             try {
                 URL url = new URL(url_register);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -59,6 +66,10 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                         URLEncoder.encode("acc_type", "UTF-8") + "=" + URLEncoder.encode(acc_type, "UTF-8") + "&" +
                         URLEncoder.encode("pan", "UTF-8") + "=" + URLEncoder.encode(pan, "UTF-8") + "&" +
                         URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8") + "&" +
+                        URLEncoder.encode("panNo", "UTF-8") + "=" + URLEncoder.encode(panNo, "UTF-8") + "&" +
+                        URLEncoder.encode("aadhaarNo", "UTF-8") + "=" + URLEncoder.encode(aadhaarNo, "UTF-8") + "&" +
+                        URLEncoder.encode("aadhaarImg", "UTF-8") + "=" + URLEncoder.encode(aadhaarImg, "UTF-8") + "&" +
+                        URLEncoder.encode("signatureImg", "UTF-8") + "=" + URLEncoder.encode(signatureImg, "UTF-8") + "&" +
                         URLEncoder.encode("address", "UTF-8") + "=" + URLEncoder.encode(address, "UTF-8");
                 bufferedWriter.write(post);
                 bufferedWriter.flush();
@@ -124,14 +135,24 @@ class ParallelThread extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        Toast.makeText(c,"Please Wait",Toast.LENGTH_SHORT).show();
+        //if(route.equals("register")){
+            dialog.setMessage("Requesting");
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        //}
     }
 
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         if(route=="register") {
+            if(dialog.isShowing()){
+                dialog.dismiss();
+            }
             Toast.makeText(c, s, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(c, MainActivity.class);
+            c.startActivity(intent);
             //Intent ij = new Intent(c, FingerprintActivity.class);
             //c.startActivity(ij);
         }
