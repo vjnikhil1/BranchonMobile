@@ -136,7 +136,7 @@ class ParallelThread extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         //if(route.equals("register")){
-            dialog.setMessage("Requesting");
+            dialog.setMessage("Please Wait");
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
@@ -157,6 +157,8 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             //c.startActivity(ij);
         }
         else if(route=="login"){
+            if(dialog.isShowing())
+                dialog.dismiss();
             Toast.makeText(c,s,Toast.LENGTH_LONG).show();
             GlobVar gv = new GlobVar();
             gv.setAcc_no(s);

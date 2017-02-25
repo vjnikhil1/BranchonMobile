@@ -72,6 +72,11 @@ public class Registration extends AppCompatActivity {
                         ver.get(i).setError(ver.get(i).getHint()+" is mandatory");
                         flag = 0;
                     }
+                    else if(img==null||aadhaarImg==null||signatureImg==null) {
+                        Toast.makeText(Registration.this, "Please check whether all the images are properly uploaded",
+                                Toast.LENGTH_LONG).show();
+                        flag = 0;
+                    }
                 }
                 if(flag==1){
                     ParallelThread pt = new ParallelThread(Registration.this);
