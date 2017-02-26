@@ -89,8 +89,13 @@ public class DashboardFragment extends Fragment {
         FirebaseMessaging.getInstance().subscribeToTopic("test");
         String token = FirebaseInstanceId.getInstance().getToken();
         pref = this.getActivity().getSharedPreferences("BOM", 0);
-        if(!token.equals(pref.getString("token",null)))
-            registerToken();
+        if(pref.getString("token",null)!=null){
+            FirebaseAsyncTask as = new FirebaseAsyncTask(this.getActivity());
+            as.execute(pref.getString("token",null),pref.getString("accName",null));
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("token",null);
+            editor.commit();
+        }
         return view;
     }
 
@@ -133,40 +138,5 @@ public class DashboardFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
     private void registerToken() {
-        Log.e("token","In registerToken");
-        pref = this.getActivity().getSharedPreferences("BOM", 0);
-        String url_token = "http://bom.pe.hu/token.php";
-        try {
-            URL url = new URL(url_token);
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-            con.setDoOutput(true);
-            con.setDoInput(true);
-            OutputStream os = con.getOutputStream();
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-            String post = URLEncoder.encode("Token", "UTF-8") + "=" + URLEncoder.encode(pref.getString("token", null), "UTF-8") + "&" +
-                    URLEncoder.encode("firstname", "UTF-8") + "=" + URLEncoder.encode(pref.getString("accName", null), "UTF-8");
-            bufferedWriter.write(post);
-            bufferedWriter.flush();
-            bufferedWriter.close();
-            os.close();
-            InputStream is = con.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-            result = "";
-            String line = "";
-            while ((line = bufferedReader.readLine()) != null) {
-                result += line;
-            }
-            Log.e("token", result);
-            bufferedReader.close();
-            is.close();
-            con.disconnect();
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
