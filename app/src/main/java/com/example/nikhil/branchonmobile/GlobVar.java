@@ -7,13 +7,13 @@ import android.app.Application;
  */
 
 public class GlobVar extends Application {
-    private String acc_no;
+    protected static String acc_no;
 
     public String getAcc_no() {
         return acc_no;
     }
 
-    public void setAcc_no(String acc_no) {
-        this.acc_no = acc_no;
+    public void setAcc_no(String accNo) {
+        this.acc_no = accNo;
     }
 }

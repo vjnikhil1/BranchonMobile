@@ -1,8 +1,10 @@
 package com.example.nikhil.branchonmobile;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -160,9 +162,11 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             if(dialog.isShowing())
                 dialog.dismiss();
             Toast.makeText(c,s,Toast.LENGTH_LONG).show();
-            GlobVar gv = new GlobVar();
-            gv.setAcc_no(s);
             if(!s.equals("Wrong Credentials")) {
+                SharedPreferences p = c.getSharedPreferences("BOM",0);
+                SharedPreferences.Editor editor = p.edit();
+                editor.putString("accName",s);
+                editor.commit();
                 Intent intent = new Intent(c, FingerprintActivity.class);
                 c.startActivity(intent);
             }
