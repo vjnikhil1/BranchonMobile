@@ -20,6 +20,7 @@ import android.widget.TextView;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private TextView accName;
+    private TextView accNo;
     SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +31,11 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         accName = (TextView) header.findViewById(R.id.accName);
+        accNo = (TextView) header.findViewById(R.id.accNo);
         pref = getSharedPreferences("BOM", 0);
         //Log.e("Pref", pref.getString("accName", ""));
         accName.setText(pref.getString("accName",""));
+        accNo.setText(pref.getString("accNo",null));
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,20 +93,20 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.dashboard) {
             // Handle the camera action
             DashboardFragment db = new DashboardFragment();
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction().replace(R.id.content_home, db).commit();
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.transfer_funds) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.fixed_deposit) {
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.demand_draft) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.process_cheque) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.update_details) {
 
         }
 

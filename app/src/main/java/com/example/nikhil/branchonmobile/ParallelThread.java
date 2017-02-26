@@ -1,6 +1,7 @@
 package com.example.nikhil.branchonmobile;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +9,12 @@ import android.content.SharedPreferences;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -30,15 +36,20 @@ import java.net.URLEncoder;
 class ParallelThread extends AsyncTask<String, Void, String> {
     Context c;
     String result = "";
+    Fragment a;
     ProgressDialog dialog;
     ParallelThread(Context c){
         this.c = c;
         dialog = new ProgressDialog(c);
     }
+    ParallelThread(Fragment a){
+        this.a = a;
+        dialog = new ProgressDialog(a.getContext());
+    }
     String route;
     @Override
     protected String doInBackground(String... params) {
-        String url_register = "http://bom.pe.hu/register.php";//"http://52.33.154.120:8080/register.php";
+        String url_register = /*"http://bom.pe.hu/register.php";*/"http://52.33.154.120:8080/register.php";
         route = params[0];
         if (route == "register") {
             String first_name = params[1];
@@ -99,6 +110,10 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             String url_loginauth = "http://bom.pe.hu/loginauth.php";
             String acc_no = params[1];
             String password = params[2];
+            SharedPreferences pref = c.getSharedPreferences("BOM", 0);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString("accNo", acc_no);
+            editor.commit();
             try {
                 URL url = new URL(url_loginauth);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -109,6 +124,40 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
                 String post = URLEncoder.encode("acc_no", "UTF-8") + "=" + URLEncoder.encode(acc_no, "UTF-8") + "&" +
                         URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                bufferedWriter.write(post);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                os.close();
+                InputStream is = con.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                result = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                is.close();
+                con.disconnect();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(route.equals("balance")){
+            String url_balance = "http://bom.pe.hu/balance.php";
+            String accNo = params[1];
+            try {
+                URL url = new URL(url_balance);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("POST");
+                con.setDoOutput(true);
+                con.setDoInput(true);
+                OutputStream os = con.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                String post = URLEncoder.encode("accNo", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8");
                 bufferedWriter.write(post);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -171,6 +220,24 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                 c.startActivity(intent);
             }
         }
-        Log.e("test",s);
+        else if(route.equals("balance")){
+            Log.e("balance", s);
+            String bal = "";
+            try {
+                JSONObject jo = new JSONObject(s);
+                JSONArray ja = jo.getJSONArray("server_response");
+                for(int i=0;i<ja.length();i++){
+                    JSONObject j = ja.getJSONObject(i);
+                    bal = j.getString("balance");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            TextView balance = (TextView) a.getActivity().findViewById(R.id.textView5);
+            balance.setText("₹ "+bal+"/-");
+            if(dialog.isShowing())
+                dialog.dismiss();
+        }
+        //Log.e("test",s);
     }
 }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -47,6 +48,7 @@ public class DashboardFragment extends Fragment {
     SharedPreferences pref;
     Context context;
     private String result;
+    private TextView balance;
 
     private OnFragmentInteractionListener mListener;
 
@@ -54,14 +56,6 @@ public class DashboardFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DashboardFragment.
-     */
     // TODO: Rename and change types and number of parameters
     public static DashboardFragment newInstance(String param1, String param2) {
         DashboardFragment fragment = new DashboardFragment();
@@ -96,6 +90,8 @@ public class DashboardFragment extends Fragment {
             editor.putString("token",null);
             editor.commit();
         }
+        ParallelThread pt = new ParallelThread(DashboardFragment.this);
+        pt.execute("balance", pref.getString("accNo", null));
         return view;
     }
 
@@ -123,20 +119,8 @@ public class DashboardFragment extends Fragment {
         //mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-    private void registerToken() {
     }
 }
