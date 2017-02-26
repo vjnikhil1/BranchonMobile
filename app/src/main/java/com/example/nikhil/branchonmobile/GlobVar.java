@@ -6,7 +6,7 @@ import android.app.Application;
  * Created by Nikhil on 06-02-2017.
  */
 
-public class GlobVar extends Application {
+public class GlobVar {
     protected static String acc_no;
 
     public String getAcc_no() {
