@@ -53,6 +53,9 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        DashboardFragment db = new DashboardFragment();
+        FragmentManager fm = getFragmentManager();
+        fm.beginTransaction().replace(R.id.content_home, db).commit();
     }
 
     @Override

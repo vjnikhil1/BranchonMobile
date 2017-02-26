@@ -81,7 +81,12 @@ public class DashboardFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         FirebaseMessaging.getInstance().subscribeToTopic("test");
-        String token = FirebaseInstanceId.getInstance().getToken();
+        try {
+            FirebaseInstanceId.getInstance().deleteInstanceId();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        FirebaseInstanceId.getInstance().getToken();
         pref = this.getActivity().getSharedPreferences("BOM", 0);
         if(pref.getString("token",null)!=null){
             FirebaseAsyncTask as = new FirebaseAsyncTask(this.getActivity());
