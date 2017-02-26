@@ -99,6 +99,9 @@ public class HomeActivity extends AppCompatActivity
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction().replace(R.id.content_home, db).commit();
         } else if (id == R.id.transfer_funds) {
+            TransferFundsFragment tf = new TransferFundsFragment();
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction().replace(R.id.content_home, tf).commit();
 
         } else if (id == R.id.fixed_deposit) {
 

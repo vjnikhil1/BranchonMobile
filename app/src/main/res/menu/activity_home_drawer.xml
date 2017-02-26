@@ -9,7 +9,7 @@
         <item
             android:id="@+id/transfer_funds"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Transfer Fundss" />
+            android:title="Transfer Funds" />
         <item
             android:id="@+id/fixed_deposit"
             android:icon="@drawable/ic_menu_gallery"
