@@ -88,13 +88,13 @@ public class DashboardFragment extends Fragment {
         }
         FirebaseInstanceId.getInstance().getToken();
         pref = this.getActivity().getSharedPreferences("BOM", 0);
-        if(pref.getString("token",null)!=null){
+        //if(pref.getString("token",null)!=null){
             FirebaseAsyncTask as = new FirebaseAsyncTask(this.getActivity());
             as.execute(pref.getString("token",null),pref.getString("accName",null));
             SharedPreferences.Editor editor = pref.edit();
-            editor.putString("token",null);
+            //editor.putString("token",null);
             editor.commit();
-        }
+        //}
         ParallelThread pt = new ParallelThread(DashboardFragment.this);
         pt.execute("balance", pref.getString("accNo", null));
         return view;
