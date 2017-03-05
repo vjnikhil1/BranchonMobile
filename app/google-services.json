@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "136607917472",
+    "firebase_url": "https://branch-on-mobile.firebaseio.com",
+    "project_id": "branch-on-mobile",
+    "storage_bucket": "branch-on-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:136607917472:android:fd80c84eaa845e62",
+        "android_client_info": {
+          "package_name": "com.example.nikhil.branchonmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "136607917472-rj2dl70h03l1ue453alhba04r3le46ic.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nikhil.branchonmobile",
+            "certificate_hash": "70619bb243438fd8ca4641e66ae65e51c876d3ce"
+          }
+        },
+        {
+          "client_id": "136607917472-8m6fhrchrioaer2ha479lnfskib9lcvs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdP4yJuTZIBC9FnVzatpMd2W4egiY9OO8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "136607917472-8m6fhrchrioaer2ha479lnfskib9lcvs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

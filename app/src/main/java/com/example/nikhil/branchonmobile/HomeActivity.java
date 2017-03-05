@@ -36,14 +36,14 @@ public class HomeActivity extends AppCompatActivity
         //Log.e("Pref", pref.getString("accName", ""));
         accName.setText(pref.getString("accName",""));
         accNo.setText(pref.getString("accNo",null));
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
-        });
+        });*/
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -113,6 +113,9 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.process_cheque) {
 
         } else if (id == R.id.update_details) {
+            UpdateFragment uf = new UpdateFragment();
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction().replace(R.id.content_home, uf).commit();
 
         } else if (id == R.id.close) {
             CloseFragment cf = new CloseFragment();
