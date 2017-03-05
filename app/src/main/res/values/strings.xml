@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Branch on Mobile</string>
     <string name="title_activity_registration">Registration</string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home">Bank</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

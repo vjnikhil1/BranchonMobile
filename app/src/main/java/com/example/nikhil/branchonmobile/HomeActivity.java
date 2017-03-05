@@ -114,6 +114,11 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.update_details) {
 
+        } else if (id == R.id.close) {
+            CloseFragment cf = new CloseFragment();
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction().replace(R.id.content_home, cf).commit();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
