@@ -26,6 +26,7 @@
 
     <item android:title="Personal Details">
         <menu>
+            <group android:checkableBehavior="single">
             <item
                 android:id="@+id/update_details"
                 android:icon="@drawable/ic_menu_share"
@@ -34,7 +35,7 @@
                 android:id="@+id/close"
                 android:icon="@drawable/ic_menu_send"
                 android:title="Close Account" />
+            </group>
         </menu>
     </item>
-
 </menu>

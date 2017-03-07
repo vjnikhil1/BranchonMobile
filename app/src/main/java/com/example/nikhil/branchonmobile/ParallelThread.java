@@ -38,6 +38,7 @@ class ParallelThread extends AsyncTask<String, Void, String> {
     String result = "";
     Fragment a;
     ProgressDialog dialog;
+    SharedPreferences pref;
     ParallelThread(Context c){
         this.c = c;
         dialog = new ProgressDialog(c);
@@ -107,10 +108,10 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             }
         }
         else if(route=="login"){
-            String url_loginauth = "http://bom.pe.hu/loginauth.php";
+            String url_loginauth = "http://52.33.154.120:8080/loginauth.php";//"http://bom.pe.hu/loginauth.php";
             String acc_no = params[1];
             String password = params[2];
-            SharedPreferences pref = c.getSharedPreferences("BOM", 0);
+            pref = c.getSharedPreferences("BOM", 0);
             SharedPreferences.Editor editor = pref.edit();
             editor.putString("accNo", acc_no);
             editor.commit();
@@ -147,7 +148,7 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             }
         }
         else if(route.equals("balance")){
-            String url_balance = "http://bom.pe.hu/balance.php";
+            String url_balance = "http://52.33.154.120:8080/balance.php";//"http://bom.pe.hu/balance.php";
             String accNo = params[1];
             try {
                 URL url = new URL(url_balance);
@@ -217,6 +218,9 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                 editor.putString("accName",s);
                 editor.commit();
                 Intent intent = new Intent(c, FingerprintActivity.class);
+                SharedPreferences.Editor editor1 = pref.edit();
+                editor1.putString("printLoc", "login");
+                editor1.commit();
                 c.startActivity(intent);
             }
         }

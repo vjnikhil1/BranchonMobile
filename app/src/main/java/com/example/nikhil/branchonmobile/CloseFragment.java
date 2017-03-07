@@ -85,7 +85,7 @@ public class CloseFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             String accNo = params[0];
-            String url_balance = "http://bom.pe.hu/delete.php";
+            String url_balance = "http://52.33.154.120:8080/delete.php";//"http://bom.pe.hu/delete.php";
             String result="";
             try {
                 URL url = new URL(url_balance);

@@ -35,7 +35,7 @@ public class FirebaseAsyncTask extends AsyncTask<String,Void,String> {
         String token = params[0];
         String accName = params[1];
         Log.e("token",token+" "+accName);
-        String url_token = "http://bom.pe.hu/token.php";
+        String url_token = "http://52.33.154.120:8080/token.php";//"http://bom.pe.hu/token.php";
         try {
             URL url = new URL(url_token);
             HttpURLConnection con = (HttpURLConnection) url.openConnection();

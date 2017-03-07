@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="119dp"
+        android:layout_weight="0.01"
+        app:cardElevation="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView14"
+                android:textAppearance="@android:style/TextAppearance.Material.Large"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/textView10"
+                android:layout_marginStart="20dp" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView16"
+                android:textAppearance="@android:style/TextAppearance.Material.Large"
+                android:layout_alignBaseline="@+id/textView15"
+                android:layout_alignBottom="@+id/textView15"
+                android:layout_toEndOf="@+id/textView15"
+                android:layout_marginStart="20dp" />
+
+            <TextView
+                android:text="  Pay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView10"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                android:layout_alignBaseline="@+id/textView14"
+                android:layout_alignBottom="@+id/textView14"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:text="  Amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView15"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                android:layout_below="@+id/textView14"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:text="  Issue Date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView17"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                android:layout_below="@+id/textView16"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView18"
+                android:textAppearance="@android:style/TextAppearance.Material.Large"
+                android:layout_alignBaseline="@+id/textView17"
+                android:layout_alignBottom="@+id/textView17"
+                android:layout_toEndOf="@+id/textView17"
+                android:layout_marginStart="20dp" />
+
+            <TextView
+                android:text="TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView20"
+                android:textAppearance="@android:style/TextAppearance.Material.Large"
+                android:layout_below="@+id/textView18"
+                android:layout_alignStart="@+id/textView16"
+                android:layout_marginStart="20dp" />
+
+            <TextView
+                android:text="  Status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView19"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                android:layout_alignBaseline="@+id/textView20"
+                android:layout_alignBottom="@+id/textView20"
+                android:layout_alignParentStart="true" />
+
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/progressBar5"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:progress="35" />
+
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

@@ -50,12 +50,12 @@ public class HomeActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        DashboardFragment db = new DashboardFragment();
+        onNavigationItemSelected(navigationView.getMenu().getItem(0).setChecked(true));
+        /*DashboardFragment db = new DashboardFragment();
         FragmentManager fm = getFragmentManager();
-        fm.beginTransaction().replace(R.id.content_home, db).commit();
+        fm.beginTransaction().replace(R.id.content_home, db).commit();*/
     }
 
     @Override
