@@ -111,6 +111,9 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.demand_draft) {
 
         } else if (id == R.id.process_cheque) {
+            ChequeFragment cf = new ChequeFragment();
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction().replace(R.id.content_home, cf).commit();
 
         } else if (id == R.id.update_details) {
             UpdateFragment uf = new UpdateFragment();

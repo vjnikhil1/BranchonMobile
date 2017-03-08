@@ -35,7 +35,7 @@ import java.net.URLEncoder;
  */
 public class CloseFragment extends Fragment {
     SharedPreferences pref;
-    private EditText no;
+    private EditText no, reasonText;
     private Button close;
 
     public CloseFragment() {
@@ -52,15 +52,17 @@ public class CloseFragment extends Fragment {
         final String accNo = pref.getString("accNo", null);
         no = (EditText) view.findViewById(R.id.closeAccNo);
         close = (Button) view.findViewById(R.id.button6);
+        reasonText = (EditText) view.findViewById(R.id.editText2);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String accNoIn = no.getText().toString();
+                String reason = reasonText.getText().toString();
                 if(!accNoIn.equals(accNo))
                     Toast.makeText(view.getContext(),"Wrong Number Entered", Toast.LENGTH_SHORT).show();
                 else{
                     CloseAsync ca = new CloseAsync(view.getContext());
-                    ca.execute(accNoIn);
+                    ca.execute(accNoIn, reason);
                 }
             }
         });
@@ -85,6 +87,7 @@ public class CloseFragment extends Fragment {
         @Override
         protected String doInBackground(String... params) {
             String accNo = params[0];
+            String reason = params[1];
             String url_balance = "http://52.33.154.120:8080/delete.php";//"http://bom.pe.hu/delete.php";
             String result="";
             try {
@@ -95,7 +98,8 @@ public class CloseFragment extends Fragment {
                 con.setDoInput(true);
                 OutputStream os = con.getOutputStream();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                String post = URLEncoder.encode("accNo", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8");
+                String post = URLEncoder.encode("accNo", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8") + "&" +
+                        URLEncoder.encode("reason", "UTF-8") + "=" + URLEncoder.encode(reason, "UTF-8");
                 bufferedWriter.write(post);
                 bufferedWriter.flush();
                 bufferedWriter.close();
