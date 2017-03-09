@@ -44,11 +44,11 @@ public class ChequesAdapter extends RecyclerView.Adapter<ChequesAdapter.ChequeVi
         public ProgressBar progress;
         public ChequeViewHolder(View itemView) {
             super(itemView);
-            pay = (TextView) itemView.findViewById(R.id.textView10);
-            amount = (TextView) itemView.findViewById(R.id.textView15);
-            issue = (TextView) itemView.findViewById(R.id.textView17);
-            status = (TextView) itemView.findViewById(R.id.textView20);
-            progress = (ProgressBar) itemView.findViewById(R.id.progressBar5);
+            pay = (TextView) itemView.findViewById(R.id.textView14);
+            amount = (TextView) itemView.findViewById(R.id.textView11);
+            issue = (TextView) itemView.findViewById(R.id.textView10);
+            status = (TextView) itemView.findViewById(R.id.textView7);
+            progress = (ProgressBar) itemView.findViewById(R.id.progressBar2);
         }
     }
 }

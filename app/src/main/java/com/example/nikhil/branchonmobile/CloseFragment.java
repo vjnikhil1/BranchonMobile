@@ -50,6 +50,7 @@ public class CloseFragment extends Fragment {
         final View view =  inflater.inflate(R.layout.fragment_close, container, false);
         pref = this.getActivity().getSharedPreferences("BOM",0);
         final String accNo = pref.getString("accNo", null);
+        final SharedPreferences.Editor editor = pref.edit();
         no = (EditText) view.findViewById(R.id.closeAccNo);
         close = (Button) view.findViewById(R.id.button6);
         reasonText = (EditText) view.findViewById(R.id.editText2);
@@ -61,77 +62,15 @@ public class CloseFragment extends Fragment {
                 if(!accNoIn.equals(accNo))
                     Toast.makeText(view.getContext(),"Wrong Number Entered", Toast.LENGTH_SHORT).show();
                 else{
-                    CloseAsync ca = new CloseAsync(view.getContext());
-                    ca.execute(accNoIn, reason);
+                    editor.putString("printLoc", "close");
+                    editor.putString("accNoIn", accNoIn);
+                    editor.putString("reason", reason);
+                    editor.commit();
+                    Intent intent = new Intent(getContext(), FingerprintActivity.class);
+                    getContext().startActivity(intent);
                 }
             }
         });
         return view;
-    }
-    class CloseAsync extends AsyncTask<String, Void, String>{
-        ProgressDialog pd;
-        Context c;
-        CloseAsync(Context c){
-            this.c = c;
-            pd = new ProgressDialog(c);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            pd.setMessage("Please Wait");
-            pd.setCanceledOnTouchOutside(false);
-            pd.setCancelable(false);
-            pd.show();
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            String accNo = params[0];
-            String reason = params[1];
-            String url_balance = "http://52.33.154.120:8080/delete.php";//"http://bom.pe.hu/delete.php";
-            String result="";
-            try {
-                URL url = new URL(url_balance);
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("POST");
-                con.setDoOutput(true);
-                con.setDoInput(true);
-                OutputStream os = con.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
-                String post = URLEncoder.encode("accNo", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8") + "&" +
-                        URLEncoder.encode("reason", "UTF-8") + "=" + URLEncoder.encode(reason, "UTF-8");
-                bufferedWriter.write(post);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                os.close();
-                InputStream is = con.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                result = "";
-                String line = "";
-                while ((line = bufferedReader.readLine()) != null) {
-                    result += line;
-                }
-                bufferedReader.close();
-                is.close();
-                con.disconnect();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return result;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            if(pd.isShowing())
-                pd.dismiss();
-            Log.e("delete", s);
-            if(s.equals("1")) {
-                Toast.makeText(c, "Deleted Successfully", Toast.LENGTH_LONG).show();
-                Intent i = new Intent(c, MainActivity.class);
-                c.startActivity(i);
-            }
-            else
-                Toast.makeText(c, "Problem Occurred. Try again.", Toast.LENGTH_LONG).show();
-        }
     }
 }

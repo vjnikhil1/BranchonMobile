@@ -22,10 +22,12 @@ public class HomeActivity extends AppCompatActivity
     private TextView accName;
     private TextView accNo;
     SharedPreferences pref;
+    FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         NavigationView nv = (NavigationView) findViewById(R.id.nav_view);
         View header = nv.getHeaderView(0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -98,29 +100,36 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.dashboard) {
             // Handle the camera action
+            fab.hide();
             DashboardFragment db = new DashboardFragment();
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction().replace(R.id.content_home, db).commit();
         } else if (id == R.id.transfer_funds) {
+            fab.hide();
             TransferFundsFragment tf = new TransferFundsFragment();
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction().replace(R.id.content_home, tf).commit();
 
         } else if (id == R.id.fixed_deposit) {
+            fab.hide();
 
         } else if (id == R.id.demand_draft) {
+            fab.hide();
 
         } else if (id == R.id.process_cheque) {
+            fab.show();
             ChequeFragment cf = new ChequeFragment();
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction().replace(R.id.content_home, cf).commit();
 
         } else if (id == R.id.update_details) {
+            fab.hide();
             UpdateFragment uf = new UpdateFragment();
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction().replace(R.id.content_home, uf).commit();
 
         } else if (id == R.id.close) {
+            fab.hide();
             CloseFragment cf = new CloseFragment();
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction().replace(R.id.content_home, cf).commit();
