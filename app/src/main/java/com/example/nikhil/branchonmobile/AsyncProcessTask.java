@@ -53,10 +53,13 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
                 while ((text = bufReader.readLine()) != null) {
                     contents.append(text).append(System.getProperty("line.separator"));
                 }
+                OCRParse op = new OCRParse(contents.toString());
+                String[] output = op.getDetails();
+                Log.e("ChequeFinal", output[0]+output[1]+output[2]+output[3]);
             } finally {
                 fis.close();
             }
-            Log.e("Output", contents.toString());
+            //Log.e("Output", contents.toString());
         } catch (Exception e) {
         }
         //activity.updateResults(result);

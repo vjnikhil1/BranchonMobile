@@ -1,8 +1,10 @@
 package com.example.nikhil.branchonmobile;
 
 
+import android.app.AlertDialog;
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -20,6 +22,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,7 +105,7 @@ public class ChequeFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Uri uri = data.getData();
+        /*Uri uri = data.getData();
         String imgPath;
         if (uri == null) {
             imgPath = mCurrentPhotoPath;
@@ -111,7 +114,31 @@ public class ChequeFragment extends Fragment {
             imgPath = getPath(getContext(), uri);
         }
         AsyncProcessTask as = new AsyncProcessTask(getActivity());
-        as.execute(imgPath, resultUrl);
+        as.execute(imgPath, resultUrl);*/
+        openDialog();
+
+    }
+
+    private void openDialog(){
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.alert_layout, null);
+        AlertDialog.Builder ab = new AlertDialog.Builder(getActivity());
+        ab.setTitle("Extracted Details");
+        ab.setMessage("Please check whether the details are correct.");
+        ab.setView(view);
+        AlertDialog ad = ab.create();
+        ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        ab.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        ab.show();
 
     }
 
