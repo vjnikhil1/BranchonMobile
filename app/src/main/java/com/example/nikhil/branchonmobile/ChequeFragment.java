@@ -105,7 +105,9 @@ public class ChequeFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /*Uri uri = data.getData();
+        if(data==null)
+            return;
+        Uri uri = data.getData();
         String imgPath;
         if (uri == null) {
             imgPath = mCurrentPhotoPath;
@@ -114,31 +116,8 @@ public class ChequeFragment extends Fragment {
             imgPath = getPath(getContext(), uri);
         }
         AsyncProcessTask as = new AsyncProcessTask(getActivity());
-        as.execute(imgPath, resultUrl);*/
-        openDialog();
+        as.execute(imgPath, resultUrl);
 
-    }
-
-    private void openDialog(){
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.alert_layout, null);
-        AlertDialog.Builder ab = new AlertDialog.Builder(getActivity());
-        ab.setTitle("Extracted Details");
-        ab.setMessage("Please check whether the details are correct.");
-        ab.setView(view);
-        AlertDialog ad = ab.create();
-        ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        ab.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        ab.show();
 
     }
 

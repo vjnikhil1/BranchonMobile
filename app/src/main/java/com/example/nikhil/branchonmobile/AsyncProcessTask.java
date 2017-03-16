@@ -1,14 +1,20 @@
 package com.example.nikhil.branchonmobile;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
 
 import com.abbyy.ocrsdk.Client;
 import com.abbyy.ocrsdk.ProcessingSettings;
 import com.abbyy.ocrsdk.Task;
+import com.abbyy.ocrsdk.TextFieldSettings;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -56,6 +62,7 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
                 OCRParse op = new OCRParse(contents.toString());
                 String[] output = op.getDetails();
                 Log.e("ChequeFinal", output[0]+output[1]+output[2]+output[3]);
+                openDialog(output);
             } finally {
                 fis.close();
             }
@@ -63,6 +70,37 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
         } catch (Exception e) {
         }
         //activity.updateResults(result);
+    }
+    private void openDialog(String[] output){
+        View view = LayoutInflater.from(activity).inflate(R.layout.alert_layout, null);
+        AlertDialog.Builder ab = new AlertDialog.Builder(activity);
+        ab.setTitle("Extracted Details");
+        ab.setMessage("Please check whether the details are correct.");
+        ab.setView(view);
+        AlertDialog ad = ab.create();
+        TextView tv1 = (TextView) view.findViewById(R.id.textView18);
+        TextView tv2 = (TextView) view.findViewById(R.id.textView20);
+        TextView tv3 = (TextView) view.findViewById(R.id.textView22);
+        if(output[1]!=null)
+            tv1.setText(output[1]);
+        if(output[3]!=null)
+            tv2.setText(output[3]);
+        if(output[2]!=null)
+            tv3.setText(output[2]);
+        ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        ab.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        ab.show();
+
     }
 
     @Override
@@ -80,9 +118,9 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
                     // http://ocrsdk.com/documentation/faq/#faq3
 
                     // Name of application you created
-                    restClient.applicationId = "Branch on Mobile";
+                    restClient.applicationId = "BonMobile";
             // You should get e-mail from ABBYY Cloud OCR SDK service with the application password
-            restClient.password = "GLHHNSkZ04GHeY+ohgCxAETm";
+            restClient.password = "NrD6rWu1eCpYB5M3vW5CG4Rt";
 
             publishProgress( "Uploading image...");
 

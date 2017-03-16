@@ -1,6 +1,7 @@
 package com.example.nikhil.branchonmobile;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,12 +14,16 @@ public class MainActivity extends AppCompatActivity {
     private TextView t1;
     private Button login;
     private EditText username,pass;
+    private SharedPreferences pref;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        pref = getSharedPreferences("BOM", 0);
         t1 = (TextView) findViewById(R.id.textView3);
         username = (EditText) findViewById(R.id.editText);
+        if(!pref.getString("accNo","0").equals("0"))
+            username.setText(pref.getString("accNo",null));
         pass = (EditText) findViewById(R.id.editText3);
         t1.setOnClickListener(new View.OnClickListener() {
             @Override
