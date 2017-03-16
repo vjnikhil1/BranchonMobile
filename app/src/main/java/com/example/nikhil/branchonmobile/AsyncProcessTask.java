@@ -71,7 +71,7 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
         }
         //activity.updateResults(result);
     }
-    private void openDialog(String[] output){
+    private void openDialog(final String[] output){
         View view = LayoutInflater.from(activity).inflate(R.layout.alert_layout, null);
         AlertDialog.Builder ab = new AlertDialog.Builder(activity);
         ab.setTitle("Extracted Details");
@@ -90,7 +90,9 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
         ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
+                ChequeAsyncTask ca = new ChequeAsyncTask(activity);
+                ca.execute("insert", output[3],
+                        output[1], output[0], output[2]);
             }
         });
         ab.setNegativeButton("No", new DialogInterface.OnClickListener() {
