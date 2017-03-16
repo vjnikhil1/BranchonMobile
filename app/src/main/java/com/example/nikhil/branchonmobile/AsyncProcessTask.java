@@ -5,11 +5,13 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.abbyy.ocrsdk.Client;
 import com.abbyy.ocrsdk.ProcessingSettings;
@@ -28,8 +30,10 @@ import java.io.Reader;
 
 public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
     private String inputFile, outputFile;
+    private SharedPreferences pref;
     public AsyncProcessTask(Activity activity) {
         this.activity = activity;
+        pref = activity.getSharedPreferences("BOM", 0);
         dialog = new ProgressDialog(activity);
     }
 
@@ -81,28 +85,33 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
         TextView tv1 = (TextView) view.findViewById(R.id.textView18);
         TextView tv2 = (TextView) view.findViewById(R.id.textView20);
         TextView tv3 = (TextView) view.findViewById(R.id.textView22);
-        if(output[1]!=null)
-            tv1.setText(output[1]);
-        if(output[3]!=null)
-            tv2.setText(output[3]);
-        if(output[2]!=null)
-            tv3.setText(output[2]);
-        ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ChequeAsyncTask ca = new ChequeAsyncTask(activity);
-                ca.execute("insert", output[3],
-                        output[1], output[0], output[2]);
-            }
-        });
-        ab.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        if(!("0"+output[1]).equals(pref.getString("accNo", null)))
+        {
+            Toast.makeText(activity.getApplicationContext(),"This cheque isn't issued to you", Toast.LENGTH_LONG).show();
+        }
+        else {
+            if (output[1] != null)
+                tv1.setText(output[3]);
+            if (output[3] != null)
+                tv2.setText(output[1]);
+            if (output[2] != null)
+                tv3.setText(output[2]);
+            ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    ChequeAsyncTask ca = new ChequeAsyncTask(activity);
+                    ca.execute("insert", output[3],
+                            output[1], output[0], output[2]);
+                }
+            });
+            ab.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
-        ab.show();
-
+                }
+            });
+            ab.show();
+        }
     }
 
     @Override

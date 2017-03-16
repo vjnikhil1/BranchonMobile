@@ -181,9 +181,12 @@ public class Registration extends AppCompatActivity {
         //if(requestCode==PICK_IMAGE_REQUEST)
         //Log.e("x",""+resultCode);
         if (requestCode == 1 && resultCode == RESULT_OK) {
-                Uri uri = data.getData();
-                if (uri == null) {
+                Uri uri;
+                if (data == null) {
                     uri = photoURI;
+                }
+                else{
+                    uri = data.getData();
                 }
                 //Log.e("Only cam", uri.toString());
                 try {
@@ -214,9 +217,12 @@ public class Registration extends AppCompatActivity {
                 }*/
         }
         if (requestCode == 2 && resultCode == RESULT_OK) {
-            Uri uri = data.getData();
-            if (uri == null) {
+            Uri uri;
+            if (data == null) {
                 uri = photoURI;
+            }
+            else{
+                uri = data.getData();
             }
             //Log.e("Only cam", uri.toString());
             try {
@@ -247,9 +253,12 @@ public class Registration extends AppCompatActivity {
                 }*/
         }
         if (requestCode == 3 && resultCode == RESULT_OK) {
-            Uri uri = data.getData();
-            if (uri == null) {
+            Uri uri;
+            if (data == null) {
                 uri = photoURI;
+            }
+            else{
+                uri = data.getData();
             }
             //Log.e("Only cam", uri.toString());
             try {

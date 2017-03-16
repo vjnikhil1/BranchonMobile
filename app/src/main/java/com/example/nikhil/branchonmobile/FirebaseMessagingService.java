@@ -28,8 +28,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setAutoCancel(true)
-                .setContentTitle("Fund Transfer Successful")
-                .setContentText(message)
+                .setContentTitle("Branch on Mobile")
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                 .setSmallIcon(R.drawable.ic_menu_send)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher))
                 .setSound(uri)

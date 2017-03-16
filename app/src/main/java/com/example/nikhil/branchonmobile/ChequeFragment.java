@@ -6,6 +6,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -24,6 +25,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static android.app.Activity.RESULT_CANCELED;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,15 +51,17 @@ public class ChequeFragment extends Fragment {
     ChequesAdapter adapter;
     FloatingActionButton fab;
     String mCurrentPhotoPath;
+    SharedPreferences pref;
     private String resultUrl = "result.txt";
+    Uri uriT;
 
     Uri photoURI;
     public ChequeFragment() {
-        // Required empty public constructor
-        Cheques a = new Cheques("Nikhil John", "5000", "20/10/2016", "Processing", "37");
+        // Required empty public constructors
+        /*Cheques a = new Cheques("Nikhil John", "5000", "20/10/2016", "Processing", "37");
         Cheques b = new Cheques("Sadhu", "3000", "07/10/2016", "Processing", "44");
         test.add(a);
-        test.add(b);
+        test.add(b);*/
     }
 
 
@@ -64,13 +70,16 @@ public class ChequeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cheque, container, false);
+        pref = getActivity().getSharedPreferences("BOM", 0);
+        ChequeAsyncTask ca = new ChequeAsyncTask(ChequeFragment.this);
+        ca.execute("getChequeDetails", pref.getString("accNo", null));
         fab = (FloatingActionButton) getActivity().findViewById(R.id.floatingActionButton);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        /*recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
         adapter = new ChequesAdapter(test);
         recyclerView.setLayoutManager(lm);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);*/
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +95,7 @@ public class ChequeFragment extends Fragment {
                     photoURI = FileProvider.getUriForFile(getContext(),
                             "com.example.nikhil.branchonmobile",
                             photoFile);
+                    Log.e("Uri check",photoFile.toString());
                     takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 }
 
@@ -105,21 +115,26 @@ public class ChequeFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(data==null)
-            return;
-        Uri uri = data.getData();
         String imgPath;
-        if (uri == null) {
-            imgPath = mCurrentPhotoPath;
+        Uri uri;
+        if(resultCode!=RESULT_CANCELED) {
+            if (data == null) {
+                imgPath = mCurrentPhotoPath;
+            } else {
+                uri = data.getData();
+                imgPath = getPath(getContext(), uri);
+            }
+            AsyncProcessTask as = new AsyncProcessTask(getActivity());
+            as.execute(imgPath, resultUrl);
         }
-        else{
-            imgPath = getPath(getContext(), uri);
-        }
-        AsyncProcessTask as = new AsyncProcessTask(getActivity());
-        as.execute(imgPath, resultUrl);
-
-
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if(uriT!=null)
+            outState.putString("uri", uriT.toString());
+    }
+
 
     private File createImageFile() throws IOException {
         // Create an image file name
