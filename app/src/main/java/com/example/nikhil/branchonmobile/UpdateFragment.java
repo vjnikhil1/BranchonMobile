@@ -35,7 +35,7 @@ import java.net.URLEncoder;
 
 
 public class UpdateFragment extends Fragment {
-    private EditText fname, lname, dob, email, phno, address, password;
+    private EditText fname, lname, email, phno, address, password;
     private Button update;
     private SharedPreferences pref;
     public UpdateFragment() {
@@ -47,11 +47,11 @@ public class UpdateFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_update, container, false);
+        getActivity().setTitle("Update Details");
         pref = getContext().getSharedPreferences("BOM", 0);
         final SharedPreferences.Editor editor = pref.edit();
         fname = (EditText)view.findViewById(R.id.editText5Update);
         lname = (EditText)view.findViewById(R.id.editText6Update);
-        dob = (EditText)view.findViewById(R.id.editText9Update);
         email = (EditText)view.findViewById(R.id.editText7Update);
         phno = (EditText)view.findViewById(R.id.editText8Update);
         address = (EditText)view.findViewById(R.id.editText10Update);
@@ -65,7 +65,6 @@ public class UpdateFragment extends Fragment {
                 editor.putString("printLoc", "update");
                 editor.putString("lname", lname.getText().toString());
                 editor.putString("fname", fname.getText().toString());
-                editor.putString("dob", dob.getText().toString());
                 editor.putString("email", email.getText().toString());
                 editor.putString("phno", phno.getText().toString());
                 editor.putString("address", address.getText().toString());

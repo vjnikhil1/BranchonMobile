@@ -29,6 +29,7 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         NavigationView nv = (NavigationView) findViewById(R.id.nav_view);
+        nv.setItemIconTintList(null);
         View header = nv.getHeaderView(0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -37,7 +38,7 @@ public class HomeActivity extends AppCompatActivity
         pref = getSharedPreferences("BOM", 0);
         //Log.e("Pref", pref.getString("accName", ""));
         accName.setText(pref.getString("accName",""));
-        accNo.setText(pref.getString("accNo",null));
+        accNo.setText("XXXXXXX"+pref.getString("accNo",null).substring(7));
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

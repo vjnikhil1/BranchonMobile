@@ -48,6 +48,7 @@ public class CloseFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view =  inflater.inflate(R.layout.fragment_close, container, false);
+        getActivity().setTitle("Close Account");
         pref = this.getActivity().getSharedPreferences("BOM",0);
         final String accNo = pref.getString("accNo", null);
         final SharedPreferences.Editor editor = pref.edit();

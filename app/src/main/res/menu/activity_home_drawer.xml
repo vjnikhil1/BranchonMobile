@@ -4,24 +4,24 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/dashboard"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/dashboard"
             android:title="Dashboard" />
         <item
             android:id="@+id/transfer_funds"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/transfer"
             android:title="Transfer Funds" />
         <item
             android:id="@+id/fixed_deposit"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/fixed"
             android:title="Fixed Deposit" />
         <item
             android:id="@+id/demand_draft"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/demand"
             android:title="Demand Draft" />
         <item
             android:id="@+id/process_cheque"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Process Cheque" />
+            android:icon="@drawable/cheque"
+            android:title="Deposit Cheque" />
     </group>
 
     <item android:title="Personal Details">
@@ -29,11 +29,11 @@
             <group android:checkableBehavior="single">
             <item
                 android:id="@+id/update_details"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/update"
                 android:title="Update Details" />
             <item
                 android:id="@+id/close"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/close"
                 android:title="Close Account" />
             </group>
         </menu>
