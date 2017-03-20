@@ -8,6 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.AsyncTask;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -238,7 +242,16 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                 e.printStackTrace();
             }
             TextView balance = (TextView) a.getActivity().findViewById(R.id.textView5);
-            balance.setText("₹ "+bal+"/-");
+            balance.setSingleLine(false);
+            String temp = "₹ "+bal+"/-";
+            SpannableString sp = new SpannableString("Current Wallet Balance");
+            SpannableString sp2 = new SpannableString("₹ "+bal+"/-");
+            int textSize1 = a.getContext().getResources().getDimensionPixelSize(R.dimen.text_size_1);
+            int textSize2 = a.getContext().getResources().getDimensionPixelSize(R.dimen.text_size_2);
+            sp.setSpan(new AbsoluteSizeSpan(textSize1), 0, "Current Wallet Balance".length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            sp2.setSpan(new AbsoluteSizeSpan(textSize2), 0 , temp.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            CharSequence finalText =TextUtils.concat(sp,"\n",sp2);
+            balance.setText(finalText);
             if(dialog.isShowing())
                 dialog.dismiss();
         }

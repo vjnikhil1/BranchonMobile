@@ -59,6 +59,7 @@
         <activity
             android:name=".FingerprintActivity"
             android:label="@string/title_activity_fingerprint"
+            android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

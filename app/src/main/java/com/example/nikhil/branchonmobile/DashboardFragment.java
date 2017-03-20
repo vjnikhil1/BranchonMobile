@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,6 +51,9 @@ public class DashboardFragment extends Fragment {
     Context context;
     private String result;
     private TextView balance;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private ViewPagerAdapter viewPagerAdapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -82,6 +87,13 @@ public class DashboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         getActivity().setTitle("Dashboard");
         FirebaseMessaging.getInstance().subscribeToTopic("test");
+        tabLayout = (TabLayout) view.findViewById(R.id.tabsLay);
+        viewPager = (ViewPager) view.findViewById(R.id.pager);
+        viewPagerAdapter = new ViewPagerAdapter(getFragmentManager());
+        viewPagerAdapter.addFragment(new TransactionFragment(), "Transactions");
+        viewPagerAdapter.addFragment(new SummaryFragment(), "Summary");
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
         try {
             FirebaseInstanceId.getInstance().deleteInstanceId();
         } catch (IOException e) {

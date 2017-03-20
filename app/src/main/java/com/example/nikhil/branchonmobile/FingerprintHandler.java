@@ -54,10 +54,15 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 
     public void startAuth(FingerprintManager manager, FingerprintManager.CryptoObject cryptoObject) {
         CancellationSignal cancellationSignal = new CancellationSignal();
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        if(cryptoObject==null&&context==null){
+            success();
         }
-        manager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
+        else {
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            manager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
+        }
     }
 
 
@@ -82,6 +87,10 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     @Override
     public void onAuthenticationSucceeded(FingerprintManager.AuthenticationResult result) {
         this.update("Fingerprint Authentication succeeded.", true);
+        success();
+    }
+
+    public void success(){
         if(pref.getString("printLoc", null).equals("login")) {
             editor.putString("printLoc", null);
             Intent intent = new Intent(context, HomeActivity.class);
@@ -113,7 +122,6 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
             ca.execute(pref.getString("accNoIn", null), pref.getString("reason", null));
         }
     }
-
 
     public void update(String e, Boolean success){
         TextView textView = (TextView) ((Activity)context).findViewById(R.id.errorText);
