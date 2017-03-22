@@ -32,6 +32,9 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 /**
@@ -47,22 +50,17 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     // Constructor
     public FingerprintHandler(Context mContext) {
         context = mContext;
-        pref = context.getSharedPreferences("BOM", 0);
-        editor = pref.edit();
+            pref = context.getSharedPreferences("BOM", 0);
+            editor = pref.edit();
     }
 
 
     public void startAuth(FingerprintManager manager, FingerprintManager.CryptoObject cryptoObject) {
         CancellationSignal cancellationSignal = new CancellationSignal();
-        if(cryptoObject==null&&context==null){
-            success();
-        }
-        else {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }
             manager.authenticate(cryptoObject, cancellationSignal, 0, this, null);
-        }
     }
 
 
@@ -152,9 +150,14 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
                 con.setDoOutput(true);
                 con.setDoInput(true);
                 OutputStream os = con.getOutputStream();
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                DateFormat df1 = new SimpleDateFormat("HH:mm:ss");
+                Date obj = new Date();
                 BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
                 String post = URLEncoder.encode("accNo", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8") + "&" +
                         URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode(amount, "UTF-8") + "&" +
+                        URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(df.format(obj), "UTF-8") + "&" +
+                        URLEncoder.encode("time", "UTF-8") + "=" + URLEncoder.encode(df1.format(obj), "UTF-8") + "&" +
                         URLEncoder.encode("receiver", "UTF-8") + "=" + URLEncoder.encode(receiver, "UTF-8");
                 bufferedWriter.write(post);
                 bufferedWriter.flush();

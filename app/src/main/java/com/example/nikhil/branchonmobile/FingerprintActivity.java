@@ -65,8 +65,8 @@ public class FingerprintActivity extends AppCompatActivity {
              * startActivity(intent);
              */
             textView.setText("Your Device does not have a Fingerprint Sensor");
-            FingerprintHandler helper = new FingerprintHandler(null);
-            helper.startAuth(fingerprintManager, null);
+            FingerprintHandler helper = new FingerprintHandler(this);
+            helper.success();
         }else {
             // Checks whether fingerprint permission is set on manifest
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.USE_FINGERPRINT) != PackageManager.PERMISSION_GRANTED) {
