@@ -13,7 +13,7 @@ public class GlobVar {
         return acc_no;
     }
 
-    public void setAcc_no(String accNo) {
-        this.acc_no = accNo;
+    public void setAcc_no(String acc_no) {
+        this.acc_no = acc_no;
     }
 }

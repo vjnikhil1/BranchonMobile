@@ -240,8 +240,7 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
-            }
-            TextView balance = (TextView) a.getActivity().findViewById(R.id.textView5);
+            }           TextView balance = (TextView) a.getActivity().findViewById(R.id.textView5);
             balance.setSingleLine(false);
             String temp = "₹ "+bal+"/-";
             SpannableString sp = new SpannableString("Current Wallet Balance");

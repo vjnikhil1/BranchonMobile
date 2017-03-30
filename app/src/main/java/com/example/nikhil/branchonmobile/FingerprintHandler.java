@@ -193,10 +193,18 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 
         @Override
         protected void onPostExecute(String s) {
-            if(dialog.isShowing())
-                dialog.dismiss();
-            Toast.makeText(context,s,Toast.LENGTH_LONG).show();
-            Log.e("transfer", s);
+            try {
+                if(dialog.isShowing()&&dialog!=null)
+                    dialog.dismiss();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            finally {
+                dialog = null;
+                Toast.makeText(context,s,Toast.LENGTH_LONG).show();
+                Log.e("transfer", s);
+            }
         }
     }
     class UpdateAsync extends AsyncTask<String, Void, String>{

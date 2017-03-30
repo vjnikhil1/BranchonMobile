@@ -89,7 +89,7 @@ public class DashboardFragment extends Fragment {
         FirebaseMessaging.getInstance().subscribeToTopic("test");
         tabLayout = (TabLayout) view.findViewById(R.id.tabsLay);
         viewPager = (ViewPager) view.findViewById(R.id.pager);
-        viewPagerAdapter = new ViewPagerAdapter(getFragmentManager());
+        viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPagerAdapter.addFragment(new TransactionFragment(), "Transactions");
         viewPagerAdapter.addFragment(new SummaryFragment(), "Summary");
         viewPager.setAdapter(viewPagerAdapter);

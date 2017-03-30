@@ -85,11 +85,6 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
         TextView tv1 = (TextView) view.findViewById(R.id.textView18);
         TextView tv2 = (TextView) view.findViewById(R.id.textView20);
         TextView tv3 = (TextView) view.findViewById(R.id.textView22);
-        if(!("0"+output[1]).equals(pref.getString("accNo", null)))
-        {
-            Toast.makeText(activity.getApplicationContext(),"This cheque isn't issued to you", Toast.LENGTH_LONG).show();
-        }
-        else {
             if (output[1] != null)
                 tv1.setText(output[3]);
             if (output[3] != null)
@@ -99,9 +94,15 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
             ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ChequeAsyncTask ca = new ChequeAsyncTask(activity);
-                    ca.execute("insert", output[3],
-                            output[1], output[0], output[2]);
+                    if(!("0"+output[1]).equals(pref.getString("accNo", null)))
+                    {
+                        Toast.makeText(activity.getApplicationContext(),"This cheque isn't issued to you", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        ChequeAsyncTask ca = new ChequeAsyncTask(activity);
+                        ca.execute("insert", output[3],
+                                output[1], output[0], output[2]);
+                    }
                 }
             });
             ab.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -112,7 +113,6 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
             });
             ab.show();
         }
-    }
 
     @Override
     protected Boolean doInBackground(String... args) {
@@ -187,7 +187,7 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
         } catch (Exception e) {
             final String message = "Error: " + e.getMessage();
             publishProgress( message);
-            Log.e("Cheque", message);
+            Log.e("Transaction", message);
             return false;
         }
     }

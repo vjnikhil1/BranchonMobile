@@ -61,6 +61,9 @@
             android:label="@string/title_activity_fingerprint"
             android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ListViewMultiChartActivity"
+            android:label="Yolo" />
     </application>
 
 </manifest>

@@ -16,7 +16,7 @@ public class OCRParse {
         String[] res = input.split("\\s{2,}");
         for(int i=0,j=0;i<res.length;i++){
             res[i] = res[i].replaceAll("[^A-Za-z0-9\\s]","");
-            Log.e("Cheque", res[i]);
+            Log.e("Transaction", res[i]);
             if(res[i].trim().toLowerCase().contains("pay")){
                 if(res[i].length()>3){
                     result[j] = res[i].toLowerCase().replace("pay","").trim();

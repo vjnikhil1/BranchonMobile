@@ -1,6 +1,7 @@
 package com.example.nikhil.branchonmobile;
 
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -87,6 +88,8 @@ public class HomeActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(this, ListViewMultiChartActivity.class);
+            startActivity(i);
             return true;
         }
 

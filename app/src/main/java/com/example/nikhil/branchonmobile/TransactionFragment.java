@@ -1,6 +1,7 @@
 package com.example.nikhil.branchonmobile;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,7 +14,7 @@ import android.view.ViewGroup;
  */
 public class TransactionFragment extends Fragment {
 
-
+    SharedPreferences pref;
     public TransactionFragment() {
         // Required empty public constructor
     }
@@ -23,7 +24,11 @@ public class TransactionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_transaction, container, false);
+        View view = inflater.inflate(R.layout.fragment_transaction, container, false);
+        pref = getActivity().getSharedPreferences("BOM", 0);
+        TransactionsAsyncTask ta = new TransactionsAsyncTask(this);
+        ta.execute(pref.getString("accNo", null));
+        return view;
     }
 
 }
