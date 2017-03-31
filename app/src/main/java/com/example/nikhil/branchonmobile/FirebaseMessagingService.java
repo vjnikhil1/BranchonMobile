@@ -1,5 +1,6 @@
 package com.example.nikhil.branchonmobile;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -34,6 +35,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher))
                 .setSound(uri)
                 .setContentIntent(pendingIntent);
+        builder.setDefaults(Notification.DEFAULT_VIBRATE);
 
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 

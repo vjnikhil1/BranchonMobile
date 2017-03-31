@@ -116,6 +116,9 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.fixed_deposit) {
             fab.hide();
+            FDFragment fd = new FDFragment();
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction().replace(R.id.content_home, fd).commit();
 
         } else if (id == R.id.demand_draft) {
             fab.hide();
