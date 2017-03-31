@@ -10,11 +10,22 @@ import android.content.pm.PackageManager;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.AsyncTask;
 import android.os.CancellationSignal;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,6 +33,9 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -118,6 +132,11 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
             editor.putString("printLoc", null);
             CloseAsync ca = new CloseAsync(context);
             ca.execute(pref.getString("accNoIn", null), pref.getString("reason", null));
+        }
+        else if(pref.getString("printLoc", null).equals("DD")){
+            editor.putString("printLoc", null);
+            DDAsync da = new DDAsync(context);
+            da.execute(pref.getString("DDPay", null), pref.getString("DDAmount", null), pref.getString("DDAmountWord", null));
         }
     }
 
@@ -353,6 +372,154 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
             }
             else
                 Toast.makeText(c, "Problem Occurred. Try again.", Toast.LENGTH_LONG).show();
+        }
+    }
+    class DDAsync extends AsyncTask<String,Void,String>{
+        ProgressDialog pd;
+        Context c;
+        File file;
+        DDAsync(Context c){
+            this.c = c;
+            pd = new ProgressDialog(c);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            pd.setMessage("Please Wait");
+            pd.setCanceledOnTouchOutside(false);
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String payable = params[0];
+            String amount = params[1];
+            String amountWord = params[2];
+            return generatePdf(payable, amount, amountWord);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if(s.equals("1")) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setDataAndType(FileProvider.getUriForFile(c, "com.example.nikhil.branchonmobile", file), "application/pdf");
+                i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                c.startActivity(i);
+            }
+            else
+                Toast.makeText(c, "Failed!", Toast.LENGTH_LONG).show();
+        }
+        private String generatePdf(String payable, String amount, String amountWord) {
+            try {
+                String payableFinal="";
+                String amountFinal="";
+                String amountWordFinal="";
+                amountWord+=" only";
+                File fileDir = c.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS+"/DD's");
+                if (!fileDir.exists())
+                    fileDir.mkdirs();
+                DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                Date date = new Date();
+                String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                for(int i=0;i<14-amount.length();i++){
+                    amountFinal+="*";
+                }
+                amountFinal+=amount;
+                if(payable.length()%2==0){
+                    for(int i=0;i<20-(payable.length()/2);i++){
+                        payableFinal+="*";
+                    }
+                    payableFinal+=payable;
+                    for(int i=0;i<20-(payable.length()/2);i++){
+                        payableFinal+="*";
+                    }
+                }
+                else{
+                    for(int i=0;i<20-(payable.length()/2);i++){
+                        payableFinal+="*";
+                    }
+                    payableFinal+=payable;
+                    for(int i=0;i<21-(payable.length()/2);i++){
+                        payableFinal+="*";
+                    }
+                }
+                if(amountWord.length()%2==0){
+                    for(int i=0;i<40-(amountWord.length()/2);i++){
+                        amountWordFinal+="*";
+                    }
+                    amountWordFinal+=amountWord;
+                    for(int i=0;i<41-(amountWord.length()/2);i++){
+                        amountWordFinal+="*";
+                    }
+                }
+                else{
+                    for(int i=0;i<40-(amountWord.length()/2);i++){
+                        amountWordFinal+="*";
+                    }
+                    amountWordFinal+=amountWord;
+                    for(int i=0;i<40-(amountWord.length()/2);i++){
+                        amountWordFinal+="*";
+                    }
+                }
+                file = new File(fileDir +"/"+ timeStamp + ".pdf");
+                String val = "Jordan Bank";
+                String subTit = "\nJordan Bank Ltd.                                                                                                                                  VALID FOR SIX MONTHS ONLY";
+                String details = "\n\n             (ISSUING BRANCH)                             BANK AND BRANCH CODE                      DD NO.                                        DATE:                    ";
+                String details0 = "\n                   Hyderabad                                                       229      DE                                         6787654334                              "+dateFormat.format(date);
+                String details1 = "\n\n             ON DEMAND PAY";
+                String detailse = "                          "+payableFinal+"                                                                         ";
+                //String details2 = "\n                         CBIT TRANSPORT*************";
+                String details3 = "\n\n           RUPEES   ";
+                String details4 = amountWordFinal;
+                String detailsf = "   Rs. "+amountFinal+"/-";
+                String details5 = "\n\n                                                                                                                                                                                                    FOR VALUE RECEIVED";
+                String details6 = "\n\n\n\n                                                                                                                                                                                                     A/C No ("+pref.getString("accNo", null)+")";
+                String details7 = "\n                                                                                                Payable AT PAR at ALL branches";
+                Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
+                Font subFont = new Font(Font.FontFamily.TIMES_ROMAN, 16, Font.NORMAL);
+                Font normFont = new Font(Font.FontFamily.TIMES_ROMAN, 14, Font.NORMAL);
+                Font detFont = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.NORMAL);
+                Document document = new Document();
+                PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(file));
+                Rectangle one = new Rectangle(800, 360);
+                Rectangle two = new Rectangle(700, 400);
+                document.setPageSize(one);
+                document.setMargins(20, 20, 20, 20);
+                document.open();
+                document.add(new Chunk(val, boldFont).setUnderline(0.1f, -2f));
+                Chunk c = new Chunk(subTit, normFont);
+                document.add(new Phrase(c));
+                document.add(new Phrase(details, detFont));
+                document.add(new Phrase(details0, detFont));
+                Chunk c1 = new Chunk(detailse, detFont).setUnderline(0.1f, -2f);
+                document.add(new Phrase(details1, normFont));
+                document.add(c1);
+                //document.add(new Phrase(details2, detFont));
+                document.add(new Phrase(details3, subFont));
+                Chunk c2 = new Chunk(details4, detFont).setUnderline(0.1f, -2f);
+                document.add(c2);
+                Chunk c3 = new Chunk(detailsf, detFont).setUnderline(0.1f, -2f);
+                document.add(c3);
+                document.add(new Phrase(details5, detFont));
+                document.add(new Phrase(details6, detFont));
+                document.add(new Phrase(details7, detFont));
+        /*document.setPageSize(two);
+        document.setMargins(20, 20, 20, 20);
+        document.newPage();
+        document.add(p);*/
+                document.close();
+            }
+            catch (FileNotFoundException e){
+                e.printStackTrace();
+            }
+            catch (DocumentException e){
+                e.printStackTrace();
+            }
+            finally {
+                return "1";
+            }
         }
     }
 }

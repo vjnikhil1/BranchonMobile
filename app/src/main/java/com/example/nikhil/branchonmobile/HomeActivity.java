@@ -119,6 +119,9 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.demand_draft) {
             fab.hide();
+            DDFragment df = new DDFragment();
+            FragmentManager fm = getFragmentManager();
+            fm.beginTransaction().replace(R.id.content_home, df).commit();
 
         } else if (id == R.id.process_cheque) {
             fab.show();

@@ -1,7 +1,11 @@
 package com.example.nikhil.branchonmobile;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private Button login;
     private EditText username,pass;
     private SharedPreferences pref;
+    private BroadcastReceiver broadcastReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

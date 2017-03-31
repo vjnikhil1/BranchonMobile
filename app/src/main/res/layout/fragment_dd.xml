@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.nikhil.branchonmobile.DDFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Button
+        android:text="Generate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginTop="72dp"
+        android:id="@+id/buttonDD"
+        style="@android:style/Widget.Material.Button.Borderless"
+        android:background="#2196F3"
+        android:textColor="@android:color/white"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="18sp"
+        android:layout_below="@+id/editText14"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Generate DD"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView17"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:layout_marginTop="70dp"
+        android:id="@+id/editText13"
+        android:hint="Amount for DD"
+        android:layout_below="@+id/textView17"
+        android:layout_alignStart="@+id/editText14" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:id="@+id/editText14"
+        android:hint="Payable To (Max 40 characters)"
+        android:maxLength="40"
+        android:layout_below="@+id/editText13"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="92dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textCapWords"
+        android:hint="Amount in Words"
+        android:ems="10"
+        android:id="@+id/editText15"
+        android:layout_below="@+id/editText13"
+        android:layout_alignStart="@+id/editText13"
+        android:layout_marginTop="19dp" />
+</RelativeLayout>
