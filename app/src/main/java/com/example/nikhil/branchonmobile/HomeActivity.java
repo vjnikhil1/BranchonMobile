@@ -2,7 +2,9 @@ package com.example.nikhil.branchonmobile;
 
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,10 +26,13 @@ public class HomeActivity extends AppCompatActivity
     private TextView accNo;
     SharedPreferences pref;
     FloatingActionButton fab;
+    private NetworkChangeReceiver networkChangeReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        networkChangeReceiver = new NetworkChangeReceiver(this);
+        registerReceiver(networkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
         NavigationView nv = (NavigationView) findViewById(R.id.nav_view);
         nv.setItemIconTintList(null);
@@ -94,6 +99,12 @@ public class HomeActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(networkChangeReceiver);
     }
 
     @SuppressWarnings("StatementWithEmptyBody")

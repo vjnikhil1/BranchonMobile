@@ -182,15 +182,20 @@ public class Registration extends AppCompatActivity {
         //Log.e("x",""+resultCode);
         if (requestCode == 1 && resultCode == RESULT_OK) {
                 Uri uri;
-                if (data == null) {
+                if (data.getData() == null) {
                     uri = photoURI;
                 }
                 else{
                     uri = data.getData();
                 }
+                if(uri==null)
+                    Log.e("Uri creation", "Null Aaya");
+                else
+                    Log.e("Uri creation", photoURI.toString());
                 //Log.e("Only cam", uri.toString());
                 try {
-                    Bitmap b = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
+                    Bitmap b;
+                    b = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), uri);
                     ByteArrayOutputStream bo = new ByteArrayOutputStream();
                     b.compress(Bitmap.CompressFormat.JPEG, 50, bo);
                     byte[] ba = bo.toByteArray();
@@ -218,7 +223,7 @@ public class Registration extends AppCompatActivity {
         }
         if (requestCode == 2 && resultCode == RESULT_OK) {
             Uri uri;
-            if (data == null) {
+            if (data.getData() == null) {
                 uri = photoURI;
             }
             else{
@@ -254,7 +259,7 @@ public class Registration extends AppCompatActivity {
         }
         if (requestCode == 3 && resultCode == RESULT_OK) {
             Uri uri;
-            if (data == null) {
+            if (data.getData() == null) {
                 uri = photoURI;
             }
             else{

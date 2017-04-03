@@ -119,10 +119,12 @@ public class ChequeFragment extends Fragment {
         String imgPath;
         Uri uri;
         if(resultCode!=RESULT_CANCELED) {
-            if (data == null) {
+            if (data.getData() == null) {
                 imgPath = mCurrentPhotoPath;
             } else {
+
                 uri = data.getData();
+
                 imgPath = getPath(getContext(), uri);
             }
             AsyncProcessTask as = new AsyncProcessTask(getActivity());

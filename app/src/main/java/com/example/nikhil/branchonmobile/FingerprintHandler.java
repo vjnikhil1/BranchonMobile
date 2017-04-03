@@ -417,7 +417,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
                 String amountFinal="";
                 String amountWordFinal="";
                 amountWord+=" only";
-                File fileDir = c.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS+"/DD's");
+                File fileDir = c.getExternalFilesDir(Environment.DIRECTORY_PICTURES+"/DD's");
                 if (!fileDir.exists())
                     fileDir.mkdirs();
                 DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
