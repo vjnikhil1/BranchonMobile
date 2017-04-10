@@ -33,6 +33,7 @@ public class FDFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fd, container, false);
+        getActivity().setTitle("Fixed Deposit");
         time = (EditText) view.findViewById(R.id.editText16);
         sub = (Button) view.findViewById(R.id.button7);
         sub.setOnClickListener(new View.OnClickListener() {

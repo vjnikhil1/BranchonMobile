@@ -49,6 +49,7 @@ public class DDFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dd, container, false);
+        getActivity().setTitle("Demand Draft");
         pref = getActivity().getSharedPreferences("BOM",0);
         final SharedPreferences.Editor editor = pref.edit();
         payable = (EditText) view.findViewById(R.id.editText14);

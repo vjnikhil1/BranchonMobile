@@ -70,7 +70,7 @@ public class ChequeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cheque, container, false);
-        getActivity().setTitle("Transaction Deposit");
+        getActivity().setTitle("Cheque Deposit");
         pref = getActivity().getSharedPreferences("BOM", 0);
         ChequeAsyncTask ca = new ChequeAsyncTask(ChequeFragment.this);
         ca.execute("getChequeDetails", pref.getString("accNo", null));
