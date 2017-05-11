@@ -117,9 +117,11 @@ public class ChequeFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         String imgPath;
+        String imgEncode;
         Uri uri;
         if(resultCode!=RESULT_CANCELED) {
             if (data.getData() == null) {
+                uri = photoURI;
                 imgPath = mCurrentPhotoPath;
             } else {
 
@@ -127,8 +129,19 @@ public class ChequeFragment extends Fragment {
 
                 imgPath = getPath(getContext(), uri);
             }
+            Bitmap b = null;
+            try {
+                b = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            ByteArrayOutputStream bo = new ByteArrayOutputStream();
+            b.compress(Bitmap.CompressFormat.JPEG, 50, bo);
+            byte[] ba = bo.toByteArray();
+            imgEncode = Base64.encodeToString(ba, Base64.DEFAULT);
+            Log.e("Cheque img", imgEncode);
             AsyncProcessTask as = new AsyncProcessTask(getActivity());
-            as.execute(imgPath, resultUrl);
+            as.execute(imgPath, resultUrl, imgEncode);
         }
     }
 

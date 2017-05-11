@@ -29,6 +29,9 @@
                 android:textStyle="normal|bold"
                 android:textSize="18sp" />
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,7 +40,11 @@
                 android:ems="10"
                 android:id="@+id/editText5Update"
                 android:hint="First Name" />
+            </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,7 +53,11 @@
                 android:ems="10"
                 android:id="@+id/editText6Update"
                 android:hint="Last Name" />
+            </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,7 +66,11 @@
                 android:ems="10"
                 android:id="@+id/editText7Update"
                 android:hint="Email Address" />
+            </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,6 +79,11 @@
                 android:ems="10"
                 android:id="@+id/editText8Update"
                 android:hint="Phone Number" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,7 +92,11 @@
                 android:ems="10"
                 android:id="@+id/editText10Update"
                 android:hint="Address" />
+            </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -80,13 +104,13 @@
                 android:ems="10"
                 android:id="@+id/editText4Update"
                 android:hint="Password" />
+            </android.support.design.widget.TextInputLayout>
             <Button
                 android:text="Update Details"
+                android:theme="@style/MyButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/button2Update"
-                android:background="#2196F3"
-                android:textSize="18sp"
                 android:textColor="@android:color/white"/>
         </LinearLayout>
     </ScrollView>

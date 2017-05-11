@@ -30,6 +30,7 @@ import java.io.Reader;
 
 public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
     private String inputFile, outputFile;
+    private String imgEncode;
     private SharedPreferences pref;
     public AsyncProcessTask(Activity activity) {
         this.activity = activity;
@@ -101,7 +102,7 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
                     else {
                         ChequeAsyncTask ca = new ChequeAsyncTask(activity);
                         ca.execute("insert", output[3],
-                                output[1], output[0], output[2]);
+                                output[1], output[0], output[2], imgEncode);
                     }
                 }
             });
@@ -119,6 +120,7 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
 
         inputFile = args[0];
         outputFile = args[1];
+        imgEncode = args[2];
 
         try {
             Client restClient = new Client();

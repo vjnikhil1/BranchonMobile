@@ -1,11 +1,15 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.nikhil.branchonmobile.TransferFundsFragment">
+    tools:context="com.example.nikhil.branchonmobile.TransferFundsFragment"
+    android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
-
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -16,15 +20,13 @@
         android:layout_marginTop="62dp"
         android:id="@+id/editTextReceiver"
         android:hint="Receiver's Acc No" />
+    </android.support.design.widget.TextInputLayout>
 
-    <Button
-        android:text="Send"
-        android:layout_width="wrap_content"
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/transfer" />
-
+        android:layout_marginTop="30dp">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,4 +37,14 @@
         android:layout_marginTop="35dp"
         android:id="@+id/amount"
         android:hint="Amount" />
-</RelativeLayout>
+    </android.support.design.widget.TextInputLayout>
+    <Button
+        android:text="Send"
+        android:theme="@style/MyButton"
+        android:textColor="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:id="@+id/transfer"
+        android:layout_marginTop="30dp"/>
+</LinearLayout>

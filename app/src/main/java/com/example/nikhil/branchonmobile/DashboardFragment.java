@@ -116,8 +116,8 @@ public class DashboardFragment extends Fragment {
         viewPager = (ViewPager) view.findViewById(R.id.pager);
         addMoney = (TextView) view.findViewById(R.id.textView28);
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
-        viewPagerAdapter.addFragment(new TransactionFragment(), "Transactions");
         viewPagerAdapter.addFragment(new SummaryFragment(), "Summary");
+        viewPagerAdapter.addFragment(new TransactionFragment(), "Transactions");
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         try {
@@ -500,14 +500,25 @@ public class DashboardFragment extends Fragment {
                  * PayU sends the same response to merchant server and in app. In response check the value of key "status"
                  * for identifying status of transaction. There are two possible status like, success or failure
                  * */
-                new AlertDialog.Builder(getContext())
+                try {
+                    JSONObject jo = new JSONObject(data.getStringExtra("payu_response"));
+                    String status = jo.getString("status");
+                    String amt = jo.getString("amount");
+                    if(status.equals("success")){
+                        AddMoneyAsync am = new AddMoneyAsync(this);
+                        am.execute(amt);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                /*new AlertDialog.Builder(getContext())
                         .setCancelable(false)
                         .setMessage("Payu's Data : " + data.getStringExtra("payu_response") + "\n\n\n Merchant's Data: " + data.getStringExtra("result"))
                         .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 dialog.dismiss();
                             }
-                        }).show();
+                        }).show();*/
 
             } else {
                 Toast.makeText(getContext(), getString(R.string.could_not_receive_data), Toast.LENGTH_LONG).show();

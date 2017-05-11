@@ -1,28 +1,42 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.nikhil.branchonmobile.FDFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:text="Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
-        android:id="@+id/button7"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name"
         android:ems="10"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="60dp"
+        android:inputType="textPersonName"
+        android:layout_gravity="center"
+        android:hint="Period(In seconds for demo purposes)"
         android:id="@+id/editText16" />
-</RelativeLayout>
+    </android.support.design.widget.TextInputLayout>
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Amount"
+        android:ems="10"
+        android:layout_gravity="center"
+        android:id="@+id/famount"/>
+    </android.support.design.widget.TextInputLayout>
+    <Button
+        android:text="Button"
+        android:theme="@style/MyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:textColor="@android:color/white"
+        android:id="@+id/button7" />
+</LinearLayout>

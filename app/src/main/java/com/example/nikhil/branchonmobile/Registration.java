@@ -69,7 +69,7 @@ public class Registration extends AppCompatActivity {
                 for(int i=0;i<ver.size();i++){
                     if(ver.get(i).getText().toString().trim().equals("")){
                         Log.e("mand", i+"");
-                        ver.get(i).setError(ver.get(i).getHint()+" is mandatory");
+                        ver.get(i).setError("Field is mandatory");
                         flag = 0;
                     }
                     else if(img==null||aadhaarImg==null||signatureImg==null) {

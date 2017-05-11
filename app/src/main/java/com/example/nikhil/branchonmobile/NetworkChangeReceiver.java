@@ -40,7 +40,6 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
                         if (info[i].getState() == NetworkInfo.State.CONNECTED) {
                             if (!isConnected) {
                                 Log.v(LOG_TAG, "Now you are connected to Internet!");
-                                Toast.makeText(context, "Internet availablle via Broadcast receiver", Toast.LENGTH_SHORT).show();
                                 pd.dismiss();
                                 isConnected = true;
                                 // do your processing here ---

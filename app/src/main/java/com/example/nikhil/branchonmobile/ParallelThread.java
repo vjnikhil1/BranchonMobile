@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.AsyncTask;
 import android.text.SpannableString;
@@ -221,6 +222,16 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                 SharedPreferences.Editor editor = p.edit();
                 editor.putString("accName",s);
                 editor.commit();
+                DBHelper db = new DBHelper(c);
+                Cursor res = db.getData();
+                while(res.moveToNext()){
+                    Log.e("Cloud Push", res.getString(0)+res.getString(1));
+                    FingerprintHandler fh = new FingerprintHandler(c);
+                    FingerprintHandler.TransferAsync ta = fh.new TransferAsync(c);
+                    ta.execute("FD",    ((Integer.parseInt(res.getString(1)))+
+                            (Integer.parseInt(res.getString(0))*(Integer.parseInt(res.getString(1))/100)))+"");
+                }
+                db.dropTable();
                 Intent intent = new Intent(c, FingerprintActivity.class);
                 SharedPreferences.Editor editor1 = pref.edit();
                 editor1.putString("printLoc", "login");
@@ -229,6 +240,16 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             }
         }
         else if(route.equals("balance")){
+            DBHelper db = new DBHelper(a.getContext());
+            Cursor res = db.getData();
+            while(res.moveToNext()){
+                Log.e("Cloud Push", res.getString(0)+res.getString(1));
+                FingerprintHandler fh = new FingerprintHandler(a.getContext());
+                FingerprintHandler.TransferAsync ta = fh.new TransferAsync(a.getContext());
+                ta.execute("FD",    ((Integer.parseInt(res.getString(1)))+
+                        (Integer.parseInt(res.getString(0))*(Integer.parseInt(res.getString(1))/100)))+"");
+            }
+            db.dropTable();
             Log.e("balance", s);
             String bal = "";
             try {

@@ -136,7 +136,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         else if(pref.getString("printLoc", null).equals("DD")){
             editor.putString("printLoc", null);
             DDAsync da = new DDAsync(context);
-            da.execute(pref.getString("DDPay", null), pref.getString("DDAmount", null), pref.getString("DDAmountWord", null));
+            da.execute(pref.getString("DDPay", null), pref.getString("DDAmount", null), pref.getString("DDAmountWord", null), pref.getString("DDAmount", null));
         }
     }
 
@@ -378,6 +378,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         ProgressDialog pd;
         Context c;
         File file;
+        String amt, accNo, result;
         DDAsync(Context c){
             this.c = c;
             pd = new ProgressDialog(c);
@@ -396,7 +397,44 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
             String payable = params[0];
             String amount = params[1];
             String amountWord = params[2];
-            return generatePdf(payable, amount, amountWord);
+            String url_register = /*"http://bom.pe.hu/register.php";*/"http://52.33.154.120:8080/ddprocess.php";
+            amt=params[3];
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat df1 = new SimpleDateFormat("HH:mm:ss");
+            Date obj = new Date();
+            accNo = pref.getString("accNo", null);
+            try {
+                URL url = new URL(url_register);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("POST");
+                con.setDoOutput(true);
+                con.setDoInput(true);
+                OutputStream os = con.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                String post = URLEncoder.encode("accNo", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8") + "&" +
+                        URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode(amt, "UTF-8")+ "&" +
+                        URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(df.format(obj), "UTF-8")+ "&" +
+                        URLEncoder.encode("time", "UTF-8") + "=" + URLEncoder.encode(df1.format(obj), "UTF-8");
+                bufferedWriter.write(post);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                os.close();
+                InputStream is = con.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                result = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                is.close();
+                con.disconnect();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+            generatePdf(payable, amount, amountWord);
+            return result;
         }
 
         @Override
@@ -409,7 +447,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
                 c.startActivity(i);
             }
             else
-                Toast.makeText(c, "Failed!", Toast.LENGTH_LONG).show();
+                Toast.makeText(c, "Failed!"+s, Toast.LENGTH_LONG).show();
         }
         private String generatePdf(String payable, String amount, String amountWord) {
             try {

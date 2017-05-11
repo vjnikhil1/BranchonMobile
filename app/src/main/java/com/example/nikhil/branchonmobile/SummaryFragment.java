@@ -1,16 +1,21 @@
 package com.example.nikhil.branchonmobile;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -25,7 +30,25 @@ import com.github.mikephil.charting.data.RadarData;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -34,7 +57,8 @@ import java.util.List;
  */
 public class SummaryFragment extends Fragment {
 
-
+    ListView lv;
+    float DD,FD,Cheque,Transfer;
     public SummaryFragment() {
         // Required empty public constructor
     }
@@ -45,26 +69,27 @@ public class SummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_summary, container, false);
-        ListView lv = (ListView) view.findViewById(R.id.listView1);
-
-        ArrayList<ChartItem> list = new ArrayList<ChartItem>();
+        lv = (ListView) view.findViewById(R.id.listView1);
+        GraphicalViewAsync ga = new GraphicalViewAsync(getContext());
+        ga.execute("pie");
+//        ArrayList<ChartItem> list = new ArrayList<ChartItem>();
 
         // 30 items
-        for (int i = 0; i < 40; i++) {
+//        for (int i = 0; i < 40; i++) {
+//
+//            if(i % 4 == 0) {
+//                list.add(new LineChartItem(generateDataLine(i + 1), getActivity().getApplicationContext()));
+//            } else if(i % 4 == 1) {
+//                list.add(new BarChartItem(generateDataBar(1), getActivity().getApplicationContext()));
+//            } else if(i % 4 == 2) {
+//                list.add(new PieChartItem(generateDataPie(2), getActivity().getApplicationContext()));
+//            } else if(i%4 == 3){
+//                list.add(new RadarChartItem(generateDataRadar(), getActivity().getApplicationContext()));
+//            }
+//        }
 
-            if(i % 4 == 0) {
-                list.add(new LineChartItem(generateDataLine(i + 1), getActivity().getApplicationContext()));
-            } else if(i % 4 == 1) {
-                list.add(new BarChartItem(generateDataBar(i + 1), getActivity().getApplicationContext()));
-            } else if(i % 4 == 2) {
-                list.add(new PieChartItem(generateDataPie(i + 1), getActivity().getApplicationContext()));
-            } else if(i%4 == 3){
-                list.add(new RadarChartItem(generateDataRadar(), getActivity().getApplicationContext()));
-            }
-        }
-
-        SummaryFragment.ChartDataAdapter cda = new SummaryFragment.ChartDataAdapter(getActivity().getApplicationContext(), list);
-        lv.setAdapter(cda);
+//        SummaryFragment.ChartDataAdapter cda = new SummaryFragment.ChartDataAdapter(getActivity().getApplicationContext(), list);
+//        lv.setAdapter(cda);
         return view;
     }
     /** adapter that supports 3 different item types */
@@ -159,12 +184,18 @@ public class SummaryFragment extends Fragment {
      *
      * @return
      */
-    private PieData generateDataPie(int cnt) {
+    private PieData generateDataPie(float fd,float dd, float cheque,float transfer) {
 
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
-
+        float[] a = {fd,dd,cheque,transfer};
+        String[] b = {"FD", "DD", "Cheque", "Transfer"};
         for (int i = 0; i < 4; i++) {
-            entries.add(new PieEntry((float) ((Math.random() * 70) + 30), "Quarter " + (i+1)));
+            if(a[i]==0)
+            {}
+            else
+            {
+                entries.add(new PieEntry(a[i], b[i]));
+            }
         }
 
         PieDataSet d = new PieDataSet(entries, "");
@@ -172,13 +203,100 @@ public class SummaryFragment extends Fragment {
         // space between slices
         d.setSliceSpace(2f);
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
-        d.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+        d.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);
 
         PieData cd = new PieData(d);
-        cd.setValueTextColor(Color.BLACK);
+        cd.setValueTextColor(Color.WHITE);
         return cd;
     }
     private RadarData generateDataRadar(){
         return new RadarData();
+    }
+    class GraphicalViewAsync extends AsyncTask<String, Void, String>{
+        Context c;
+        String result = "";
+        ProgressDialog dialog;
+        SharedPreferences pref;
+
+        GraphicalViewAsync(Context c){
+            this.c = c;
+            dialog = new ProgressDialog(c);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog.setMessage("Please Wait");
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String url_transfer = "http://52.33.154.120:8080/graphicalview.php";//"http://bom.pe.hu/transfer.php";
+            String route = params[0];
+            SharedPreferences pref = c.getSharedPreferences("BOM", 0);
+            String accNo = pref.getString("accNo", null);
+            if((route.equals("pie"))) {
+                try {
+                    URL url = new URL(url_transfer);
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("POST");
+                    con.setDoOutput(true);
+                    con.setDoInput(true);
+                    OutputStream os = con.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                    String post = URLEncoder.encode("accNo", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8");
+                    bufferedWriter.write(post);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    os.close();
+                    InputStream is = con.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                    result = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result += line;
+                    }
+                    bufferedReader.close();
+                    is.close();
+                    con.disconnect();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Log.e("pie data", s);
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+                //Toast.makeText(c, s, Toast.LENGTH_LONG).show();
+            }
+            try {
+                JSONObject jo = new JSONObject(s);
+                String ss = jo.getString("server_response");
+                JSONObject jo1 = new JSONObject(ss);
+                FD = Float.valueOf(jo1.getString("FD"));
+                DD = Float.valueOf(jo1.getString("DD"));
+                Cheque = Float.valueOf(jo1.getString("Cheque"));
+                Transfer = Float.valueOf(jo1.getString("Transfer"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            ArrayList<ChartItem> list = new ArrayList<ChartItem>();
+            list.add(new BarChartItem(generateDataBar(1), getActivity().getApplicationContext()));
+            list.add(new PieChartItem(generateDataPie(FD,DD,Cheque,Transfer), getActivity().getApplicationContext()));
+            SummaryFragment.ChartDataAdapter cda = new SummaryFragment.ChartDataAdapter(getActivity().getApplicationContext(), list);
+            lv.setAdapter(cda);
+        }
     }
 }

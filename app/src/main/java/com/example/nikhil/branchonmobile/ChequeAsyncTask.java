@@ -76,7 +76,8 @@ public class ChequeAsyncTask extends AsyncTask<String,Void,String> {
                         URLEncoder.encode("rAccNo", "UTF-8") + "=" + URLEncoder.encode(rAccNo, "UTF-8") + "&" +
                         URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(date, "UTF-8") + "&" +
                         URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode(amount, "UTF-8") + "&" +
-                        URLEncoder.encode("status", "UTF-8") + "=" + URLEncoder.encode("50", "UTF-8");
+                        URLEncoder.encode("status", "UTF-8") + "=" + URLEncoder.encode("50", "UTF-8") + "&" +
+                        URLEncoder.encode("cheque_img", "UTF-8") + "=" + URLEncoder.encode(params[5], "UTF-8");
                 bufferedWriter.write(post);
                 bufferedWriter.flush();
                 bufferedWriter.close();

@@ -8,6 +8,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -107,6 +109,11 @@ public class TransactionsAsyncTask extends AsyncTask<String, Void, String> {
                         totArray.add(new Transaction(R.drawable.credit, "Cash Received", "From: " + j.getString("sAccNo"),
                                 j.getString("date")+", "+j.getString("time"), "₹ " + j.getString("amount")+"/-"));
                     }
+                }
+                if(totArray.isEmpty()){
+                    Log.e("No Transactions",s);
+                    TextView noTrans = (TextView) a.getActivity().findViewById(R.id.noTrans);
+                    noTrans.setVisibility(View.VISIBLE);
                 }
                 recyclerView = (RecyclerView) a.getActivity().findViewById(R.id.recyclerView2);
                 RecyclerView.LayoutManager lm = new LinearLayoutManager(a.getContext());

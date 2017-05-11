@@ -44,18 +44,18 @@ public class ListViewMultiChartActivity extends AppCompatActivity {
         ArrayList<ChartItem> list = new ArrayList<ChartItem>();
 
         // 30 items
-        for (int i = 0; i < 40; i++) {
-            
-            if(i % 4 == 0) {
-                list.add(new LineChartItem(generateDataLine(i + 1), getApplicationContext()));
-            } else if(i % 4 == 1) {
-                list.add(new BarChartItem(generateDataBar(i + 1), getApplicationContext()));
-            } else if(i % 4 == 2) {
-                list.add(new PieChartItem(generateDataPie(i + 1), getApplicationContext()));
-            } else if(i%4 == 3){
-                list.add(new RadarChartItem(generateDataRadar(), getApplicationContext()));
-            }
-        }
+//        for (int i = 0; i < 40; i++) {
+//
+//            if(i % 4 == 0) {
+//                list.add(new LineChartItem(generateDataLine(i + 1), getApplicationContext()));
+//            } else if(i % 4 == 1) {
+                list.add(new PieChartItem(generateDataPie(2), getApplicationContext()));
+                list.add(new BarChartItem(generateDataBar(1), getApplicationContext()));
+//            } else if(i % 4 == 2) {
+//            } else if(i%4 == 3){
+//                list.add(new RadarChartItem(generateDataRadar(), getApplicationContext()));
+//            }
+//        }
 
         ChartDataAdapter cda = new ChartDataAdapter(getApplicationContext(), list);
         lv.setAdapter(cda);
@@ -90,41 +90,41 @@ public class ListViewMultiChartActivity extends AppCompatActivity {
      * 
      * @return
      */
-    private LineData generateDataLine(int cnt) {
-
-        ArrayList<Entry> e1 = new ArrayList<Entry>();
-
-        for (int i = 0; i < 12; i++) {
-            e1.add(new Entry(i, (int) (Math.random() * 65) + 40));
-        }
-
-        LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
-        d1.setLineWidth(2.5f);
-        d1.setCircleRadius(4.5f);
-        d1.setHighLightColor(Color.rgb(244, 117, 117));
-        d1.setDrawValues(false);
-        
-        ArrayList<Entry> e2 = new ArrayList<Entry>();
-
-        for (int i = 0; i < 12; i++) {
-            e2.add(new Entry(i, e1.get(i).getY() - 30));
-        }
-
-        LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
-        d2.setLineWidth(2.5f);
-        d2.setCircleRadius(4.5f);
-        d2.setHighLightColor(Color.rgb(244, 117, 117));
-        d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        d2.setDrawValues(false);
-        
-        ArrayList<ILineDataSet> sets = new ArrayList<ILineDataSet>();
-        sets.add(d1);
-        sets.add(d2);
-        
-        LineData cd = new LineData(sets);
-        return cd;
-    }
+//    private LineData generateDataLine(int cnt) {
+//
+//        ArrayList<Entry> e1 = new ArrayList<Entry>();
+//
+//        for (int i = 0; i < 12; i++) {
+//            e1.add(new Entry(i, (int) (Math.random() * 65) + 40));
+//        }
+//
+//        LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
+//        d1.setLineWidth(2.5f);
+//        d1.setCircleRadius(4.5f);
+//        d1.setHighLightColor(Color.rgb(244, 117, 117));
+//        d1.setDrawValues(false);
+//
+//        ArrayList<Entry> e2 = new ArrayList<Entry>();
+//
+//        for (int i = 0; i < 12; i++) {
+//            e2.add(new Entry(i, e1.get(i).getY() - 30));
+//        }
+//
+//        LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
+//        d2.setLineWidth(2.5f);
+//        d2.setCircleRadius(4.5f);
+//        d2.setHighLightColor(Color.rgb(244, 117, 117));
+//        d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+//        d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+//        d2.setDrawValues(false);
+//
+//        ArrayList<ILineDataSet> sets = new ArrayList<ILineDataSet>();
+//        sets.add(d1);
+//        sets.add(d2);
+//
+//        LineData cd = new LineData(sets);
+//        return cd;
+//    }
     
     /**
      * generates a random ChartData object with just one DataSet
@@ -172,7 +172,7 @@ public class ListViewMultiChartActivity extends AppCompatActivity {
         cd.setValueTextColor(Color.BLACK);
         return cd;
     }
-    private RadarData generateDataRadar(){
-        return new RadarData();
-    }
+//    private RadarData generateDataRadar(){
+//        return new RadarData();
+//    }
 }

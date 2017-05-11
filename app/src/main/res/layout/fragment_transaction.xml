@@ -10,4 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/recyclerView2" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Sorry there are'nt any transactions done. Try one now!"
+        android:visibility="invisible"
+        android:id="@+id/noTrans"
+        android:gravity="center"/>
 </FrameLayout>
