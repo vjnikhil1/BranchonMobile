@@ -27,17 +27,6 @@
             android:textColor="@android:color/white"
             android:background="@color/colorPrimary"
             android:elevation="4dp"/>
-
-        <TextView
-            android:text="Click here to add money"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView28"
-            android:textColor="@android:color/white"
-            android:background="@color/colorPrimary"
-            android:textAlignment="textEnd"
-            android:elevation="4dp"
-            android:textSize="18sp" />
     </LinearLayout>
 
     <android.support.design.widget.TabLayout
@@ -67,5 +56,4 @@
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 </LinearLayout>

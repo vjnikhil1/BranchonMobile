@@ -13,6 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView17"
+        android:layout_gravity="center"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
@@ -20,13 +21,14 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:layout_marginTop="70dp"
+        android:layout_gravity="center"
         android:id="@+id/editText13"
         android:hint="Amount for DD"
         android:layout_below="@+id/textView17"
@@ -34,13 +36,15 @@
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="text"
         android:ems="10"
         android:id="@+id/editText14"
+        android:layout_gravity="center"
         android:hint="Payable To (Max 40 characters)"
         android:maxLength="40"
         android:layout_below="@+id/editText13"
@@ -50,12 +54,14 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textCapWords"
         android:hint="Amount in Words"
+        android:layout_gravity="center"
         android:ems="10"
         android:id="@+id/editText15"
         android:layout_below="@+id/editText13"
@@ -66,8 +72,9 @@
         android:text="Generate"
         android:theme="@style/MyButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/buttonDD"
+        android:layout_marginTop="30dp"
         android:textColor="@android:color/white"
         android:layout_centerHorizontal="true" />
 </LinearLayout>

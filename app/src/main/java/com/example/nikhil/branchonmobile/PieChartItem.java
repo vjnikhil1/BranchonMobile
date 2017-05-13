@@ -87,7 +87,7 @@ public class PieChartItem extends ChartItem {
     }
 
     private SpannableString generateCenterText() {
-        SpannableString s = new SpannableString("Types of expenditure\nLast\n One Month");
+        SpannableString s = new SpannableString("Types of expenditure\nLast\n 30 Days");
         s.setSpan(new RelativeSizeSpan(1.6f), 0, 20, 0);
         s.setSpan(new ForegroundColorSpan(ColorTemplate.VORDIPLOM_COLORS[0]), 0, 20, 0);
         s.setSpan(new RelativeSizeSpan(.9f), 20, 25, 0);

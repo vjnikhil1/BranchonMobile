@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,8 +60,12 @@ public class SummaryFragment extends Fragment {
 
     ListView lv;
     float DD,FD,Cheque,Transfer;
+    SwipeRefreshLayout mSwipeRefresh;
+    Fragment f;
+    String accNo;
     public SummaryFragment() {
         // Required empty public constructor
+        f = this;
     }
 
 
@@ -70,8 +75,16 @@ public class SummaryFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_summary, container, false);
         lv = (ListView) view.findViewById(R.id.listView1);
+        mSwipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.summary_refresh);
         GraphicalViewAsync ga = new GraphicalViewAsync(getContext());
         ga.execute("pie");
+        mSwipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                GraphicalViewAsync ga = new GraphicalViewAsync(getContext(), "swipe");
+                ga.execute("pie");
+            }
+        });
 //        ArrayList<ChartItem> list = new ArrayList<ChartItem>();
 
         // 30 items
@@ -171,7 +184,7 @@ public class SummaryFragment extends Fragment {
         }
 
         BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        d.setColors(ColorTemplate.JOYFUL_COLORS);
         d.setHighLightAlpha(255);
 
         BarData cd = new BarData(d);
@@ -202,7 +215,7 @@ public class SummaryFragment extends Fragment {
 
         // space between slices
         d.setSliceSpace(2f);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        d.setColors(ColorTemplate.JOYFUL_COLORS);
         d.setYValuePosition(PieDataSet.ValuePosition.INSIDE_SLICE);
 
         PieData cd = new PieData(d);
@@ -217,19 +230,28 @@ public class SummaryFragment extends Fragment {
         String result = "";
         ProgressDialog dialog;
         SharedPreferences pref;
+        String type = null;
 
         GraphicalViewAsync(Context c){
             this.c = c;
             dialog = new ProgressDialog(c);
         }
 
+        GraphicalViewAsync(Context c, String type){
+            this.c = c;
+            this.type = type;
+//            dialog = new ProgressDialog(c);
+        }
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog.setMessage("Please Wait");
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
+            if(type == null) {
+                dialog.setMessage("Please Wait");
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+            }
         }
 
         @Override
@@ -237,7 +259,7 @@ public class SummaryFragment extends Fragment {
             String url_transfer = "http://52.33.154.120:8080/graphicalview.php";//"http://bom.pe.hu/transfer.php";
             String route = params[0];
             SharedPreferences pref = c.getSharedPreferences("BOM", 0);
-            String accNo = pref.getString("accNo", null);
+            accNo = pref.getString("accNo", null);
             if((route.equals("pie"))) {
                 try {
                     URL url = new URL(url_transfer);
@@ -277,9 +299,18 @@ public class SummaryFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.e("pie data", s);
-            if (dialog.isShowing()) {
-                dialog.dismiss();
-                //Toast.makeText(c, s, Toast.LENGTH_LONG).show();
+            if(type == null) {
+                if (dialog.isShowing()) {
+                    dialog.dismiss();
+                    //Toast.makeText(c, s, Toast.LENGTH_LONG).show();
+                }
+            }
+            else {
+                if(mSwipeRefresh.isRefreshing()) {
+                    mSwipeRefresh.setRefreshing(false);
+                    ParallelThread pt = new ParallelThread(f, "swipe");
+                    pt.execute("balance", accNo);
+                }
             }
             try {
                 JSONObject jo = new JSONObject(s);
@@ -295,6 +326,7 @@ public class SummaryFragment extends Fragment {
             ArrayList<ChartItem> list = new ArrayList<ChartItem>();
             list.add(new BarChartItem(generateDataBar(1), getActivity().getApplicationContext()));
             list.add(new PieChartItem(generateDataPie(FD,DD,Cheque,Transfer), getActivity().getApplicationContext()));
+            list.add(new LineChartItem(generateDataLine(1), getActivity().getApplicationContext()));
             SummaryFragment.ChartDataAdapter cda = new SummaryFragment.ChartDataAdapter(getActivity().getApplicationContext(), list);
             lv.setAdapter(cda);
         }

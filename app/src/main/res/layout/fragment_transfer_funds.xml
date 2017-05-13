@@ -18,6 +18,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="62dp"
+        android:layout_gravity="center"
         android:id="@+id/editTextReceiver"
         android:hint="Receiver's Acc No" />
     </android.support.design.widget.TextInputLayout>
@@ -31,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="number"
+        android:layout_gravity="center"
         android:ems="10"
         android:layout_below="@+id/editTextReceiver"
         android:layout_alignEnd="@+id/editTextReceiver"
@@ -42,9 +44,9 @@
         android:text="Send"
         android:theme="@style/MyButton"
         android:textColor="@android:color/white"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_gravity="center"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/transfer"
         android:layout_marginTop="30dp"/>
 </LinearLayout>

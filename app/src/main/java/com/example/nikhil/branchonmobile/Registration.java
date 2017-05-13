@@ -37,7 +37,7 @@ public class Registration extends AppCompatActivity {
     private ImageButton upload, uploadAadhaar, uploadSignature;
     private RadioGroup rg;
     private RadioButton rb;
-    private EditText name,lname,email,mobile,address,password,panNo,aadhaarNo;
+    private EditText name,lname,email,mobile,address,password,panNo,aadhaarNo,dob;
     private String img,aadhaarImg,signatureImg;
     private Uri photoURI;
     String mCurrentPhotoPath;
@@ -54,6 +54,7 @@ public class Registration extends AppCompatActivity {
         lname = (EditText) findViewById(R.id.editText6);
         email = (EditText) findViewById(R.id.editText7);
         mobile = (EditText) findViewById(R.id.editText8);
+        dob = (EditText) findViewById(R.id.editText9);
         address = (EditText) findViewById(R.id.editText10);
         password = (EditText) findViewById(R.id.editText4);
         panNo = (EditText) findViewById(R.id.editText11);
@@ -61,7 +62,7 @@ public class Registration extends AppCompatActivity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<EditText> ver = Arrays.asList(name,lname,email,mobile,address,password,panNo,aadhaarNo);
+                List<EditText> ver = Arrays.asList(name,lname,dob,email,mobile,address,password,panNo,aadhaarNo);
                 int selected = rg.getCheckedRadioButtonId();
                 rb = (RadioButton) findViewById(selected);
                 int flag = 1;
@@ -83,7 +84,7 @@ public class Registration extends AppCompatActivity {
                     pt.execute("register", name.getText().toString(), lname.getText().toString(),
                             email.getText().toString(), mobile.getText().toString(), rb.getText().toString(),
                             img, address.getText().toString(), password.getText().toString(), panNo.getText().toString()
-                            , aadhaarNo.getText().toString(), aadhaarImg, signatureImg);
+                            , aadhaarNo.getText().toString(), aadhaarImg, signatureImg, dob.getText().toString());
                 }
             }
         });

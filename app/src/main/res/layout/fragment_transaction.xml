@@ -1,7 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/transaction_refresh"
     tools:context="com.example.nikhil.branchonmobile.TransactionFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -17,4 +18,4 @@
         android:visibility="invisible"
         android:id="@+id/noTrans"
         android:gravity="center"/>
-</FrameLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

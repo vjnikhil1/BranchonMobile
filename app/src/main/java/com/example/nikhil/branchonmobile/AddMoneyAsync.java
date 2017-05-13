@@ -2,6 +2,7 @@ package com.example.nikhil.branchonmobile;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -27,12 +28,19 @@ public class AddMoneyAsync extends AsyncTask<String, Void, String> {
     String accNo;
     String result;
     Fragment a;
+    Context c;
     SharedPreferences pref;
 
     AddMoneyAsync(Fragment a){
         this.dialog = new ProgressDialog(a.getActivity());
         this.a = a;
         pref = a.getContext().getSharedPreferences("BOM", 0);
+    }
+
+    AddMoneyAsync(Context c){
+        this.dialog = new ProgressDialog(c);
+        this.c = c;
+        pref = c.getSharedPreferences("BOM", 0);
     }
 
     @Override
@@ -84,8 +92,8 @@ public class AddMoneyAsync extends AsyncTask<String, Void, String> {
         if(dialog.isShowing())
             dialog.dismiss();
         if(o.equals("1"))
-            Toast.makeText(a.getContext(), "Money Added Successfully, Please Check your account", Toast.LENGTH_LONG).show();
+            Toast.makeText(c, "Money Added Successfully, Please Check your account", Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(a.getContext(), "A problem has occurred. Please try again.", Toast.LENGTH_LONG).show();
+            Toast.makeText(c, "A problem has occurred. Please try again.", Toast.LENGTH_LONG).show();
     }
 }

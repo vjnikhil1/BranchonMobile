@@ -1,14 +1,18 @@
 package com.example.nikhil.branchonmobile;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -40,7 +44,7 @@ import java.net.URLEncoder;
 
 class ParallelThread extends AsyncTask<String, Void, String> {
     Context c;
-    String result = "";
+    String result = "", type = null;
     Fragment a;
     ProgressDialog dialog;
     SharedPreferences pref;
@@ -51,6 +55,11 @@ class ParallelThread extends AsyncTask<String, Void, String> {
     ParallelThread(Fragment a){
         this.a = a;
         dialog = new ProgressDialog(a.getContext());
+    }
+    ParallelThread(Fragment a, String type){
+        this.a = a;
+        this.type = type;
+//        dialog = new ProgressDialog(a.getContext());
     }
     String route;
     @Override
@@ -70,6 +79,7 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             String aadhaarNo = params[10];
             String aadhaarImg = params[11];
             String signatureImg = params[12];
+            String dob = params[13];
             try {
                 URL url = new URL(url_register);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -89,7 +99,8 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                         URLEncoder.encode("aadhaarNo", "UTF-8") + "=" + URLEncoder.encode(aadhaarNo, "UTF-8") + "&" +
                         URLEncoder.encode("aadhaarImg", "UTF-8") + "=" + URLEncoder.encode(aadhaarImg, "UTF-8") + "&" +
                         URLEncoder.encode("signatureImg", "UTF-8") + "=" + URLEncoder.encode(signatureImg, "UTF-8") + "&" +
-                        URLEncoder.encode("address", "UTF-8") + "=" + URLEncoder.encode(address, "UTF-8");
+                        URLEncoder.encode("address", "UTF-8") + "=" + URLEncoder.encode(address, "UTF-8") + "&" +
+                        URLEncoder.encode("dob", "UTF-8") + "=" + URLEncoder.encode(dob, "UTF-8");
                 bufferedWriter.write(post);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -193,10 +204,12 @@ class ParallelThread extends AsyncTask<String, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         //if(route.equals("register")){
+        if(type == null) {
             dialog.setMessage("Please Wait");
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
             dialog.show();
+        }
         //}
     }
 
@@ -272,8 +285,24 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             sp2.setSpan(new AbsoluteSizeSpan(textSize2), 0 , temp.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             CharSequence finalText =TextUtils.concat(sp,"\n",sp2);
             balance.setText(finalText);
-            if(dialog.isShowing())
-                dialog.dismiss();
+            if(type == null) {
+                if (dialog.isShowing())
+                    dialog.dismiss();
+            }
+            if(Integer.parseInt(bal)<5000){
+                AlertDialog.Builder ab = new AlertDialog.Builder(a.getContext());
+                ab.setTitle("Insufficient funds");
+                ab.setMessage("Please add ₹" + (5000-Integer.parseInt(bal)) + "/- into your account to continue using your account.");
+                AlertDialog ad = ab.create();
+                ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((HomeActivity)a.getActivity()).openDialog();
+                    }
+                });
+                ab.setCancelable(false);
+                ab.show();
+            }
         }
         //Log.e("test",s);
     }

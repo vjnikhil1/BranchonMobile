@@ -10,7 +10,8 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -22,7 +23,8 @@
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp">
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,11 +34,12 @@
         android:id="@+id/famount"/>
     </android.support.design.widget.TextInputLayout>
     <Button
-        android:text="Button"
+        android:text="GENERATE"
         android:theme="@style/MyButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
         android:textColor="@android:color/white"
         android:id="@+id/button7" />
 </LinearLayout>

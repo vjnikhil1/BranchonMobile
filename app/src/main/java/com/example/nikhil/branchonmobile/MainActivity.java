@@ -34,12 +34,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        networkChangeReceiver = new NetworkChangeReceiver(this);
+        registerReceiver(networkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        if (getIntent().getBooleanExtra("EXIT", false)) {
+            finish();
+            return;
+        }
         setContentView(R.layout.activity_main);
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
         }
-        networkChangeReceiver = new NetworkChangeReceiver(this);
-        registerReceiver(networkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         pref = getSharedPreferences("BOM", 0);
         t1 = (TextView) findViewById(R.id.textView3);
         username = (EditText) findViewById(R.id.editText);

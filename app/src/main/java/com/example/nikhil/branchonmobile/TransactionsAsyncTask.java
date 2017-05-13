@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,6 +41,7 @@ public class TransactionsAsyncTask extends AsyncTask<String, Void, String> {
     TransactionAdapter adapter;
     Fragment a;
     SharedPreferences pref;
+    String type = null;
 
     public TransactionsAsyncTask(Fragment a) {
         this.dialog = new ProgressDialog(a.getActivity());
@@ -47,12 +49,21 @@ public class TransactionsAsyncTask extends AsyncTask<String, Void, String> {
         pref = a.getContext().getSharedPreferences("BOM", 0);
     }
 
+    public TransactionsAsyncTask(Fragment a, String type) {
+        //this.dialog = new ProgressDialog(a.getActivity());
+        this.type = type;
+        this.a = a;
+        pref = a.getContext().getSharedPreferences("BOM", 0);
+    }
+
     @Override
     protected void onPreExecute() {
-        dialog.setMessage("Please Wait");
-        dialog.setCancelable(false);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+        if(type==null) {
+            dialog.setMessage("Please Wait");
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        }
     }
 
     @Override
@@ -92,8 +103,18 @@ public class TransactionsAsyncTask extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String s) {
             Log.e("transactionFetch", s);
-        if(dialog.isShowing()){
-            dialog.dismiss();
+        if(type==null) {
+            if (dialog.isShowing()) {
+                dialog.dismiss();
+            }
+        }
+        else{
+            SwipeRefreshLayout mSwipe = (SwipeRefreshLayout) a.getActivity().findViewById(R.id.transaction_refresh);
+            if(mSwipe.isRefreshing()){
+                mSwipe.setRefreshing(false);
+                ParallelThread pt = new ParallelThread(a, "swipe");
+                pt.execute("balance", pref.getString("accNo", null));
+            }
         }
             List<Transaction> totArray = new ArrayList<>();
             try {
