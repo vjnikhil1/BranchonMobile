@@ -33,8 +33,8 @@ public class FirebaseAsyncTask extends AsyncTask<String,Void,String> {
     @Override
     protected String doInBackground(String... params) {
         String token = params[0];
-        String accName = params[1];
-        Log.e("token",token+" "+accName);
+        String accNo = params[1];
+        Log.e("token",token+" "+accNo);
         String url_token = "http://52.33.154.120:8080/token.php";//"http://bom.pe.hu/token.php";
         try {
             URL url = new URL(url_token);
@@ -45,7 +45,7 @@ public class FirebaseAsyncTask extends AsyncTask<String,Void,String> {
             OutputStream os = con.getOutputStream();
             BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
             String post = URLEncoder.encode("Token", "UTF-8") + "=" + URLEncoder.encode(token, "UTF-8") + "&" +
-                    URLEncoder.encode("firstname", "UTF-8") + "=" + URLEncoder.encode(accName, "UTF-8");
+                    URLEncoder.encode("acc_no", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8");
             bufferedWriter.write(post);
             bufferedWriter.flush();
             bufferedWriter.close();

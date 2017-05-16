@@ -119,7 +119,7 @@ public class DashboardFragment extends Fragment {
         pref = this.getActivity().getSharedPreferences("BOM", 0);
         //if(pref.getString("token",null)!=null){
             FirebaseAsyncTask as = new FirebaseAsyncTask(this.getActivity());
-            as.execute(pref.getString("token",null),pref.getString("accName",null));
+            as.execute(pref.getString("token",null),pref.getString("accNo",null));
             SharedPreferences.Editor editor = pref.edit();
             //editor.putString("token",null);
             editor.commit();

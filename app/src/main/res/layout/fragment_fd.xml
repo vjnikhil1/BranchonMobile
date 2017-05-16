@@ -42,4 +42,13 @@
         android:layout_marginTop="40dp"
         android:textColor="@android:color/white"
         android:id="@+id/button7" />
+
+    <TextView
+        android:id="@+id/textView28"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:text="Note that the interest rates are 1% per second" />
 </LinearLayout>

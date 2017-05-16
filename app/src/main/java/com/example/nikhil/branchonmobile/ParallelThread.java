@@ -48,6 +48,7 @@ class ParallelThread extends AsyncTask<String, Void, String> {
     Fragment a;
     ProgressDialog dialog;
     SharedPreferences pref;
+    String acc_no;
     ParallelThread(Context c){
         this.c = c;
         dialog = new ProgressDialog(c);
@@ -80,6 +81,9 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             String aadhaarImg = params[11];
             String signatureImg = params[12];
             String dob = params[13];
+            String signatureImg1 = params[14];
+            String signatureImg2 = params[15];
+
             try {
                 URL url = new URL(url_register);
                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -99,6 +103,8 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                         URLEncoder.encode("aadhaarNo", "UTF-8") + "=" + URLEncoder.encode(aadhaarNo, "UTF-8") + "&" +
                         URLEncoder.encode("aadhaarImg", "UTF-8") + "=" + URLEncoder.encode(aadhaarImg, "UTF-8") + "&" +
                         URLEncoder.encode("signatureImg", "UTF-8") + "=" + URLEncoder.encode(signatureImg, "UTF-8") + "&" +
+                        URLEncoder.encode("signatureImg1", "UTF-8") + "=" + URLEncoder.encode(signatureImg1, "UTF-8") + "&" +
+                        URLEncoder.encode("signatureImg2", "UTF-8") + "=" + URLEncoder.encode(signatureImg2, "UTF-8") + "&" +
                         URLEncoder.encode("address", "UTF-8") + "=" + URLEncoder.encode(address, "UTF-8") + "&" +
                         URLEncoder.encode("dob", "UTF-8") + "=" + URLEncoder.encode(dob, "UTF-8");
                 bufferedWriter.write(post);
@@ -125,7 +131,7 @@ class ParallelThread extends AsyncTask<String, Void, String> {
         }
         else if(route=="login"){
             String url_loginauth = "http://52.33.154.120:8080/loginauth.php";//"http://bom.pe.hu/loginauth.php";
-            String acc_no = params[1];
+            acc_no = params[1];
             String password = params[2];
             pref = c.getSharedPreferences("BOM", 0);
             SharedPreferences.Editor editor = pref.edit();
@@ -234,6 +240,7 @@ class ParallelThread extends AsyncTask<String, Void, String> {
                 SharedPreferences p = c.getSharedPreferences("BOM",0);
                 SharedPreferences.Editor editor = p.edit();
                 editor.putString("accName",s);
+                editor.putString("accNo", acc_no);
                 editor.commit();
                 DBHelper db = new DBHelper(c);
                 Cursor res = db.getData();

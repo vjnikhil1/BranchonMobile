@@ -38,13 +38,20 @@ public class Registration extends AppCompatActivity {
     private RadioGroup rg;
     private RadioButton rb;
     private EditText name,lname,email,mobile,address,password,panNo,aadhaarNo,dob;
-    private String img,aadhaarImg,signatureImg;
+    private String img,aadhaarImg;
+    private String[] signatureImg;
     private Uri photoURI;
     String mCurrentPhotoPath;
+    int sigCount;
+    int imgCount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        sigCount = 0;
+        imgCount = 0;
+        signatureImg = new String[3];
         register = (Button) findViewById(R.id.button2);
         upload = (ImageButton) findViewById(R.id.button3);
         rg = (RadioGroup) findViewById(R.id.radioGroup);
@@ -84,7 +91,8 @@ public class Registration extends AppCompatActivity {
                     pt.execute("register", name.getText().toString(), lname.getText().toString(),
                             email.getText().toString(), mobile.getText().toString(), rb.getText().toString(),
                             img, address.getText().toString(), password.getText().toString(), panNo.getText().toString()
-                            , aadhaarNo.getText().toString(), aadhaarImg, signatureImg, dob.getText().toString());
+                            , aadhaarNo.getText().toString(), aadhaarImg, signatureImg[0], dob.getText().toString()
+                            , signatureImg[1], signatureImg[2]);
                 }
             }
         });
@@ -170,6 +178,7 @@ public class Registration extends AppCompatActivity {
                                 Intent.EXTRA_INITIAL_INTENTS,
                                 new Intent[] { takePhotoIntent }
                         );
+                sigCount++;
                 startActivityForResult(chooserIntent, 3);
             }
         });
@@ -272,9 +281,9 @@ public class Registration extends AppCompatActivity {
                 ByteArrayOutputStream bo = new ByteArrayOutputStream();
                 b.compress(Bitmap.CompressFormat.JPEG, 50, bo);
                 byte[] ba = bo.toByteArray();
-                signatureImg = Base64.encodeToString(ba, Base64.DEFAULT);
+                signatureImg[imgCount++] = Base64.encodeToString(ba, Base64.DEFAULT);
                 TextView signatureStatus = (TextView) findViewById(R.id.textView2);
-                signatureStatus.setText("Upload Success");
+                signatureStatus.setText("Upload Success ("+sigCount+" images)");
                 signatureStatus.setTextColor(Color.parseColor("#4CAF50"));
                 //Log.e("yo", img);
                 //ImageView iv = (ImageView) findViewById(R.id.imageView);
@@ -293,6 +302,32 @@ public class Registration extends AppCompatActivity {
                     img = Base64.encodeToString(ba, Base64.DEFAULT);
                     //Log.e("image",img);
                 }*/
+                if(sigCount++<3) {
+                    Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    File photoFile = null;
+                    try {
+                        photoFile = createImageFile();
+                    } catch (IOException ex) {
+                    }
+                    if (photoFile != null) {
+                        photoURI = FileProvider.getUriForFile(Registration.this,
+                                "com.example.nikhil.branchonmobile",
+                                photoFile);
+                        takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    }
+
+                    String pickTitle = "Select or take a new Picture"; // Or get from strings.xml
+                    Intent chooserIntent = Intent.createChooser(pickPhoto, pickTitle);
+                    chooserIntent.putExtra
+                            (
+                                    Intent.EXTRA_INITIAL_INTENTS,
+                                    new Intent[] { takePhotoIntent }
+                            );
+                    startActivityForResult(chooserIntent, 3);
+                }
+
         }
     }
     private File createImageFile() throws IOException {

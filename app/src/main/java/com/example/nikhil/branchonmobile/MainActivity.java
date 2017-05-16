@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent i = new Intent(MainActivity.this, Guide.class);
+        startActivity(i);
         networkChangeReceiver = new NetworkChangeReceiver(this);
         registerReceiver(networkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         if (getIntent().getBooleanExtra("EXIT", false)) {
@@ -78,11 +80,11 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 200) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //start audio recording or whatever you planned to do
+//                start audio recording or whatever you planned to do
 
             }else if (grantResults[0] == PackageManager.PERMISSION_DENIED){
                 if (ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    //Show an explanation to the user *asynchronously*
+//                    Show an explanation to the user *asynchronously*
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("This permission is important for the application to run properly.")
                             .setTitle("Important permission required");
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                     ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
                 }else{
-                    //Never ask again and handle your app without permission.
+//                    Never ask again and handle your app without permission.
                 }
             }
         }
