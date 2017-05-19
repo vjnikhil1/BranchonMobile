@@ -37,7 +37,7 @@ import java.util.Date;
 public class DDFragment extends Fragment {
     private File file;
     private SharedPreferences pref;
-    private EditText payable, amount, amountWord;
+    private EditText payable, amount, amountWord, password;
     private Button generate;
 
     public DDFragment() {
@@ -57,11 +57,12 @@ public class DDFragment extends Fragment {
         amount = (EditText) view.findViewById(R.id.editText13);
         generate = (Button) view.findViewById(R.id.buttonDD);
         amountWord = (EditText) view.findViewById(R.id.editText15);
+        password = (EditText) view.findViewById(R.id.password);
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(payable.getText().toString().isEmpty()||amount.getText().toString().isEmpty()
-                        ||amountWord.getText().toString().isEmpty()) {
+                        ||amountWord.getText().toString().isEmpty()||password.getText().toString().isEmpty()) {
                     Toast.makeText(getContext(), "Enter all the fields", Toast.LENGTH_LONG).show();
                 }
                 else if(Integer.valueOf(amount.getText().toString())<=0) {
@@ -72,6 +73,7 @@ public class DDFragment extends Fragment {
                     editor.putString("DDPay", payable.getText().toString());
                     editor.putString("DDAmount", amount.getText().toString());
                     editor.putString("DDAmountWord", amountWord.getText().toString());
+                    editor.putString("password", password.getText().toString());
                     editor.commit();
                     Intent intent = new Intent(getContext(), FingerprintActivity.class);
                     startActivity(intent);

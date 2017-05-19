@@ -40,7 +40,7 @@ import java.util.Random;
  * A simple {@link Fragment} subclass.
  */
 public class FDFragment extends Fragment {
-    private EditText time, amount;
+    private EditText time, amount, password;
     private Button sub;
 
 
@@ -57,28 +57,22 @@ public class FDFragment extends Fragment {
         getActivity().setTitle("Fixed Deposit");
         time = (EditText) view.findViewById(R.id.editText16);
         amount = (EditText) view.findViewById(R.id.famount);
+        password = (EditText) view.findViewById(R.id.password);
         sub = (Button) view.findViewById(R.id.button7);
         sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(time.getText().toString().isEmpty()||amount.getText().toString().isEmpty()) {
+                if(time.getText().toString().isEmpty()||amount.getText().toString().isEmpty()
+                        ||password.getText().toString().isEmpty()) {
                     Toast.makeText(getContext(), "Enter all the fields", Toast.LENGTH_LONG).show();
                 }
                 else if(Integer.valueOf(amount.getText().toString())<=0) {
                     Toast.makeText(getContext(), "Enter a valid amount", Toast.LENGTH_LONG).show();
                 }
-                FDAsync fa = new FDAsync(getContext());
-                fa.execute(amount.getText().toString());
-                Toast.makeText(getContext(), "FD Successfully Created", Toast.LENGTH_LONG).show();
-                AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
-                Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
-                notificationIntent.putExtra("amount", amount.getText().toString());
-                notificationIntent.putExtra("period", time.getText().toString());
-                notificationIntent.addCategory("android.intent.category.DEFAULT");
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), new Random().nextInt(), notificationIntent, PendingIntent.FLAG_ONE_SHOT);
-                Calendar calendar = Calendar.getInstance();
-                calendar.add(Calendar.SECOND, Integer.parseInt(time.getText().toString()));
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                else {
+                    FDAsync fa = new FDAsync(getContext());
+                    fa.execute(amount.getText().toString(), password.getText().toString());
+                }
             }
         });
         return view;
@@ -106,6 +100,7 @@ public class FDFragment extends Fragment {
         protected String doInBackground(String... params) {
             String url_transfer = "http://52.33.154.120:8080/fdprocess.php";//"http://bom.pe.hu/transfer.php";
             String amount = params[0];
+            String password = params[1];
             SharedPreferences pref = c.getSharedPreferences("BOM", 0);
             String accNo = pref.getString("accNo", null);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -122,7 +117,8 @@ public class FDFragment extends Fragment {
                 String post = URLEncoder.encode("accNo", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8") + "&" +
                         URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(df.format(obj), "UTF-8") + "&" +
                         URLEncoder.encode("time", "UTF-8") + "=" + URLEncoder.encode(df1.format(obj), "UTF-8") + "&" +
-                        URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode(amount, "UTF-8");
+                        URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode(amount, "UTF-8") + "&" +
+                        URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
                 bufferedWriter.write(post);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -153,6 +149,23 @@ public class FDFragment extends Fragment {
             if (dialog.isShowing()) {
                 dialog.dismiss();
                 Toast.makeText(c, s, Toast.LENGTH_LONG).show();
+            }
+            if(s.equals("Please check your transaction password")){
+                Toast.makeText(c,s,Toast.LENGTH_LONG).show();
+                Intent i = new Intent(c, HomeActivity.class);
+                c.startActivity(i);
+            }
+            else {
+                Toast.makeText(getContext(), "FD Successfully Created", Toast.LENGTH_LONG).show();
+                AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
+                Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
+                notificationIntent.putExtra("amount", amount.getText().toString());
+                notificationIntent.putExtra("period", time.getText().toString());
+                notificationIntent.addCategory("android.intent.category.DEFAULT");
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), new Random().nextInt(), notificationIntent, PendingIntent.FLAG_ONE_SHOT);
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.SECOND, Integer.parseInt(time.getText().toString()));
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
             }
         }
     }

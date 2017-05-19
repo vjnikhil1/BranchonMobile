@@ -2,6 +2,7 @@ package com.example.nikhil.branchonmobile;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -111,7 +112,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         else if(pref.getString("printLoc", null).equals("transfer")){
             editor.putString("printLoc", null);
             TransferAsync ta = new TransferAsync(context);
-            ta.execute(pref.getString("rec", null), pref.getString("amount", null));
+            ta.execute(pref.getString("rec", null), pref.getString("amount", null), pref.getString("password", null));
             Intent intent = new Intent(context, HomeActivity.class);
             context.startActivity(intent);
         }
@@ -136,7 +137,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
         else if(pref.getString("printLoc", null).equals("DD")){
             editor.putString("printLoc", null);
             DDAsync da = new DDAsync(context);
-            da.execute(pref.getString("DDPay", null), pref.getString("DDAmount", null), pref.getString("DDAmountWord", null), pref.getString("DDAmount", null));
+            da.execute(pref.getString("DDPay", null), pref.getString("DDAmount", null), pref.getString("DDAmountWord", null), pref.getString("DDAmount", null), pref.getString("password", null));
         }
     }
 
@@ -160,6 +161,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
             String url_transfer = "http://52.33.154.120:8080/transfer.php";//"http://bom.pe.hu/transfer.php";
             String receiver = params[0];
             String amount = params[1];
+            String password = params[2];
             SharedPreferences pref = c.getSharedPreferences("BOM", 0);
             String accNo = pref.getString("accNo", null);
             try {
@@ -177,7 +179,8 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
                         URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode(amount, "UTF-8") + "&" +
                         URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(df.format(obj), "UTF-8") + "&" +
                         URLEncoder.encode("time", "UTF-8") + "=" + URLEncoder.encode(df1.format(obj), "UTF-8") + "&" +
-                        URLEncoder.encode("receiver", "UTF-8") + "=" + URLEncoder.encode(receiver, "UTF-8");
+                        URLEncoder.encode("receiver", "UTF-8") + "=" + URLEncoder.encode(receiver, "UTF-8") + "&" +
+                        URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
                 bufferedWriter.write(post);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -220,6 +223,11 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
                 e.printStackTrace();
             }
             finally {
+                if(s.equals("Please check your transaction password")){
+                    Toast.makeText(context,s,Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(c, HomeActivity.class);
+                    c.startActivity(i);
+                }
                 dialog = null;
                 Toast.makeText(context,s,Toast.LENGTH_LONG).show();
                 Log.e("transfer", s);
@@ -397,6 +405,7 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
             String payable = params[0];
             String amount = params[1];
             String amountWord = params[2];
+            String password = params[4];
             String url_register = /*"http://bom.pe.hu/register.php";*/"http://52.33.154.120:8080/ddprocess.php";
             amt=params[3];
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -414,7 +423,8 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
                 String post = URLEncoder.encode("accNo", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8") + "&" +
                         URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode(amt, "UTF-8")+ "&" +
                         URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(df.format(obj), "UTF-8")+ "&" +
-                        URLEncoder.encode("time", "UTF-8") + "=" + URLEncoder.encode(df1.format(obj), "UTF-8");
+                        URLEncoder.encode("time", "UTF-8") + "=" + URLEncoder.encode(df1.format(obj), "UTF-8")+ "&" +
+                        URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
                 bufferedWriter.write(post);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -446,8 +456,12 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
                 i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 c.startActivity(i);
             }
-            else
+            else if(s.equals("Please check your transaction password")) {
                 Toast.makeText(c, "Failed!"+s, Toast.LENGTH_LONG).show();
+                c.getContentResolver().delete(FileProvider.getUriForFile(c, "com.example.nikhil.branchonmobile", file),null,null);
+                Intent i = new Intent(c, HomeActivity.class);
+                c.startActivity(i);
+            }
         }
         private String generatePdf(String payable, String amount, String amountWord) {
             try {

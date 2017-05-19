@@ -85,6 +85,32 @@
         android:id="@+id/famount"/>
     </android.support.design.widget.TextInputLayout>
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:srcCompat="@drawable/password" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Transaction Password"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:layout_gravity="center"
+                android:id="@+id/password"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
     <Button
         android:text="GENERATE"
         android:theme="@style/MyButton"

@@ -1,3 +1,6 @@
+<ScrollView android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -98,7 +101,7 @@
 
         <ImageView
             android:id="@+id/imageView7"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             app:srcCompat="@drawable/words" />
@@ -118,6 +121,33 @@
         android:layout_marginTop="19dp" />
     </android.support.design.widget.TextInputLayout>
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            app:srcCompat="@drawable/password" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Transaction Password"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:layout_gravity="center"
+                android:id="@+id/password"/>
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
     <Button
         android:text="Generate"
         android:theme="@style/MyButton"
@@ -127,4 +157,13 @@
         android:layout_marginTop="30dp"
         android:textColor="@android:color/white"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView32"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="DD's are stored in location /storageDir/Android/data/com.example.branchonmobile/files/pictures/DD's" />
 </LinearLayout>
+</ScrollView>

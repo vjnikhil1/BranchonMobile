@@ -34,8 +34,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent i = new Intent(MainActivity.this, Guide.class);
-        startActivity(i);
+        pref = getSharedPreferences("BOM", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        if(!pref.getBoolean("isItFirstLogin", false)) {
+            editor.putBoolean("isItFirstLogin", true);
+            editor.commit();
+            Intent i = new Intent(MainActivity.this, Guide.class);
+            startActivity(i);
+        }
         networkChangeReceiver = new NetworkChangeReceiver(this);
         registerReceiver(networkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         if (getIntent().getBooleanExtra("EXIT", false)) {
@@ -46,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 200);
         }
-        pref = getSharedPreferences("BOM", 0);
         t1 = (TextView) findViewById(R.id.textView3);
         username = (EditText) findViewById(R.id.editText);
         if(!pref.getString("accNo","0").equals("0"))

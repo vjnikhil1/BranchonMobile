@@ -56,7 +56,7 @@ public class HomeActivity extends AppCompatActivity
 
     // This sets the configuration
     private PayuConfig payuConfig;
-    private String merchantKey, userCredentials;
+    private String merchantKey, userCredentials, s;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,6 +208,11 @@ public class HomeActivity extends AppCompatActivity
             FragmentManager fm = getFragmentManager();
             fm.beginTransaction().replace(R.id.content_home, cf).commit();
 
+        } else if (id == R.id.logout) {
+            Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.putExtra("EXIT", true);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

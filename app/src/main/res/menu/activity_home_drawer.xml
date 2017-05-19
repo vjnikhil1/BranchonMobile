@@ -35,6 +35,10 @@
                 android:id="@+id/close"
                 android:icon="@drawable/close"
                 android:title="Close Account" />
+                <item
+                    android:id="@+id/logout"
+                    android:icon="@drawable/logout"
+                    android:title="Logout" />
             </group>
         </menu>
     </item>

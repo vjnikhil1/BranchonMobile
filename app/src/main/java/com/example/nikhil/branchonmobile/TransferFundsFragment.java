@@ -41,7 +41,7 @@ public class TransferFundsFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private EditText rec, amount;
+    private EditText rec, amount, password;
     private Button send;
     private SharedPreferences pref;
 
@@ -78,11 +78,16 @@ public class TransferFundsFragment extends Fragment {
         rec = (EditText) view.findViewById(R.id.editTextReceiver);
         amount = (EditText) view.findViewById(R.id.amount);
         send = (Button) view.findViewById(R.id.transfer);
+        password = (EditText) view.findViewById(R.id.password);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), FingerprintActivity.class);
-                if(Integer.valueOf(amount.getText().toString())<=0) {
+                if(amount.getText().toString().isEmpty()||rec.getText().toString().isEmpty()
+                        ||password.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Enter all the fields", Toast.LENGTH_LONG).show();
+                }
+                else if(Integer.valueOf(amount.getText().toString())<=0) {
                     Toast.makeText(getContext(), "Invalid amount", Toast.LENGTH_LONG).show();
                 }
                 else {
@@ -91,6 +96,7 @@ public class TransferFundsFragment extends Fragment {
                     editor.putString("printLoc", "transfer");
                     editor.putString("rec", rec.getText().toString());
                     editor.putString("amount", amount.getText().toString());
+                    editor.putString("password", password.getText().toString());
                     editor.commit();
                     getContext().startActivity(intent);
                 }
