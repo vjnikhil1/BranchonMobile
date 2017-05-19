@@ -175,15 +175,15 @@ public class SummaryFragment extends Fragment {
      *
      * @return
      */
-    private BarData generateDataBar(int cnt) {
+    private BarData generateDataBar(ArrayList<BarEntry> entry) {
 
-        ArrayList<BarEntry> entries = new ArrayList<BarEntry>();
+        ArrayList<BarEntry> entries = entry;
 
-        for (int i = 0; i < 12; i++) {
-            entries.add(new BarEntry(i, (int) (Math.random() * 70) + 30));
-        }
+//        for (int i = 0; i < 12; i++) {
+//            entries.add(new BarEntry(cnt, val));
+//        }
 
-        BarDataSet d = new BarDataSet(entries, "New DataSet " + cnt);
+        BarDataSet d = new BarDataSet(entries, "Expenditure in the last 12 days");
         d.setColors(ColorTemplate.JOYFUL_COLORS);
         d.setHighLightAlpha(255);
 
@@ -225,19 +225,22 @@ public class SummaryFragment extends Fragment {
     private RadarData generateDataRadar(){
         return new RadarData();
     }
-    class GraphicalViewAsync extends AsyncTask<String, Void, String>{
+    class GraphicalViewAsync extends AsyncTask<String, Void, String[]>{
         Context c;
-        String result = "";
+        String[] result;
         ProgressDialog dialog;
         SharedPreferences pref;
         String type = null;
+        String route;
 
         GraphicalViewAsync(Context c){
+            result = new String[2];
             this.c = c;
             dialog = new ProgressDialog(c);
         }
 
         GraphicalViewAsync(Context c, String type){
+            result = new String[2];
             this.c = c;
             this.type = type;
 //            dialog = new ProgressDialog(c);
@@ -255,9 +258,10 @@ public class SummaryFragment extends Fragment {
         }
 
         @Override
-        protected String doInBackground(String... params) {
+        protected String[] doInBackground(String... params) {
             String url_transfer = "http://52.33.154.120:8080/graphicalview.php";//"http://bom.pe.hu/transfer.php";
-            String route = params[0];
+            String url_bar = "http://52.33.154.120:8080/graphicalviewbar.php";
+            route = params[0];
             SharedPreferences pref = c.getSharedPreferences("BOM", 0);
             accNo = pref.getString("accNo", null);
             if((route.equals("pie"))) {
@@ -276,10 +280,40 @@ public class SummaryFragment extends Fragment {
                     os.close();
                     InputStream is = con.getInputStream();
                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                    result = "";
+                    result[0] = "";
                     String line = "";
                     while ((line = bufferedReader.readLine()) != null) {
-                        result += line;
+                        result[0] += line;
+                    }
+                    bufferedReader.close();
+                    is.close();
+                    con.disconnect();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    URL url = new URL(url_bar);
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    con.setRequestMethod("POST");
+                    con.setDoOutput(true);
+                    con.setDoInput(true);
+                    OutputStream os = con.getOutputStream();
+                    BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                    String post = URLEncoder.encode("accNo", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8");
+                    bufferedWriter.write(post);
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                    os.close();
+                    InputStream is = con.getInputStream();
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                    result[1] = "";
+                    String line = "";
+                    while ((line = bufferedReader.readLine()) != null) {
+                        result[1] += line;
                     }
                     bufferedReader.close();
                     is.close();
@@ -296,39 +330,52 @@ public class SummaryFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String s) {
+        protected void onPostExecute(String[] s) {
             super.onPostExecute(s);
-            Log.e("pie data", s);
-            if(type == null) {
+            JSONArray ja = null;
+            Log.e("pie data", s[0]+s[1]);
+            if (type == null) {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
                     //Toast.makeText(c, s, Toast.LENGTH_LONG).show();
                 }
-            }
-            else {
-                if(mSwipeRefresh.isRefreshing()) {
+            } else {
+                if (mSwipeRefresh.isRefreshing()) {
                     mSwipeRefresh.setRefreshing(false);
                     ParallelThread pt = new ParallelThread(f, "swipe");
                     pt.execute("balance", accNo);
                 }
             }
-            try {
-                JSONObject jo = new JSONObject(s);
-                String ss = jo.getString("server_response");
-                JSONObject jo1 = new JSONObject(ss);
-                FD = Float.valueOf(jo1.getString("FD"));
-                DD = Float.valueOf(jo1.getString("DD"));
-                Cheque = Float.valueOf(jo1.getString("Cheque"));
-                Transfer = Float.valueOf(jo1.getString("Transfer"));
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (route.equals("pie")) {
+                try {
+                    JSONObject jo = new JSONObject(s[0]);
+                    String ss = jo.getString("server_response");
+                    JSONObject jo1 = new JSONObject(ss);
+                    FD = Float.valueOf(jo1.getString("FD"));
+                    DD = Float.valueOf(jo1.getString("DD"));
+                    Cheque = Float.valueOf(jo1.getString("Cheque"));
+                    Transfer = Float.valueOf(jo1.getString("Transfer"));
+                    JSONObject joBar = new JSONObject(s[1]);
+                    ja = joBar.getJSONArray("result");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                ArrayList<ChartItem> list = new ArrayList<ChartItem>();
+                ArrayList<BarEntry> l;
+                l = new ArrayList<BarEntry>();
+                for (int i = 0; i < 12; i++) {
+                    try {
+                        l.add(new BarEntry(i+1, Integer.valueOf(ja.getString(i))));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                list.add(new BarChartItem(generateDataBar(l), getActivity().getApplicationContext()));
+                list.add(new PieChartItem(generateDataPie(FD, DD, Cheque, Transfer), getActivity().getApplicationContext()));
+                list.add(new LineChartItem(generateDataLine(1), getActivity().getApplicationContext()));
+                SummaryFragment.ChartDataAdapter cda = new SummaryFragment.ChartDataAdapter(getActivity().getApplicationContext(), list);
+                lv.setAdapter(cda);
             }
-            ArrayList<ChartItem> list = new ArrayList<ChartItem>();
-            list.add(new BarChartItem(generateDataBar(1), getActivity().getApplicationContext()));
-            list.add(new PieChartItem(generateDataPie(FD,DD,Cheque,Transfer), getActivity().getApplicationContext()));
-            list.add(new LineChartItem(generateDataLine(1), getActivity().getApplicationContext()));
-            SummaryFragment.ChartDataAdapter cda = new SummaryFragment.ChartDataAdapter(getActivity().getApplicationContext(), list);
-            lv.setAdapter(cda);
         }
     }
 }
