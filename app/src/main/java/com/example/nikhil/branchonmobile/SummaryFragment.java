@@ -16,8 +16,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -34,6 +36,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -59,6 +62,7 @@ import java.util.List;
 public class SummaryFragment extends Fragment {
 
     ListView lv;
+    TextView empty;
     float DD,FD,Cheque,Transfer;
     SwipeRefreshLayout mSwipeRefresh;
     Fragment f;
@@ -74,7 +78,8 @@ public class SummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_summary, container, false);
-        lv = (ListView) view.findViewById(R.id.listView1);
+        lv = (ListView) view.findViewById(R.id.listViewSummary);
+        empty = (TextView) view.findViewById(R.id.noTransList);
         mSwipeRefresh = (SwipeRefreshLayout) view.findViewById(R.id.summary_refresh);
         GraphicalViewAsync ga = new GraphicalViewAsync(getContext());
         ga.execute("pie");
@@ -134,27 +139,27 @@ public class SummaryFragment extends Fragment {
      *
      * @return
      */
-    private LineData generateDataLine(int cnt) {
+    private LineData generateDataLine(ArrayList<Entry> e1, ArrayList<Entry> e2) {
 
-        ArrayList<Entry> e1 = new ArrayList<Entry>();
+//        ArrayList<Entry> e1 = new ArrayList<Entry>();
+//
+//        for (int i = 0; i < 12; i++) {
+//            e1.add(new Entry(i, (int) (Math.random() * 65) + 40));
+//        }
 
-        for (int i = 0; i < 12; i++) {
-            e1.add(new Entry(i, (int) (Math.random() * 65) + 40));
-        }
-
-        LineDataSet d1 = new LineDataSet(e1, "New DataSet " + cnt + ", (1)");
+        LineDataSet d1 = new LineDataSet(e1, "Debits - Past 12 days");
         d1.setLineWidth(2.5f);
         d1.setCircleRadius(4.5f);
         d1.setHighLightColor(Color.rgb(244, 117, 117));
         d1.setDrawValues(false);
 
-        ArrayList<Entry> e2 = new ArrayList<Entry>();
+//        ArrayList<Entry> e2 = new ArrayList<Entry>();
 
-        for (int i = 0; i < 12; i++) {
-            e2.add(new Entry(i, e1.get(i).getY() - 30));
-        }
+//        for (int i = 0; i < 12; i++) {
+//            e2.add(new Entry(i, e1.get(i).getY() - 30));
+//        }
 
-        LineDataSet d2 = new LineDataSet(e2, "New DataSet " + cnt + ", (2)");
+        LineDataSet d2 = new LineDataSet(e2, "Credits - Past 12 days");
         d2.setLineWidth(2.5f);
         d2.setCircleRadius(4.5f);
         d2.setHighLightColor(Color.rgb(244, 117, 117));
@@ -234,13 +239,13 @@ public class SummaryFragment extends Fragment {
         String route;
 
         GraphicalViewAsync(Context c){
-            result = new String[2];
+            result = new String[3];
             this.c = c;
             dialog = new ProgressDialog(c);
         }
 
         GraphicalViewAsync(Context c, String type){
-            result = new String[2];
+            result = new String[3];
             this.c = c;
             this.type = type;
 //            dialog = new ProgressDialog(c);
@@ -261,6 +266,7 @@ public class SummaryFragment extends Fragment {
         protected String[] doInBackground(String... params) {
             String url_transfer = "http://52.33.154.120:8080/graphicalview.php";//"http://bom.pe.hu/transfer.php";
             String url_bar = "http://52.33.154.120:8080/graphicalviewbar.php";
+            String url_line = "http://52.33.154.120:8080/graphicalviewline.php";
             route = params[0];
             SharedPreferences pref = c.getSharedPreferences("BOM", 0);
             accNo = pref.getString("accNo", null);
@@ -325,15 +331,45 @@ public class SummaryFragment extends Fragment {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            try {
+                URL url = new URL(url_line);
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("POST");
+                con.setDoOutput(true);
+                con.setDoInput(true);
+                OutputStream os = con.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+                String post = URLEncoder.encode("accNo", "UTF-8") + "=" + URLEncoder.encode(accNo, "UTF-8");
+                bufferedWriter.write(post);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                os.close();
+                InputStream is = con.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+                result[2] = "";
+                String line = "";
+                while ((line = bufferedReader.readLine()) != null) {
+                    result[2] += line;
+                }
+                bufferedReader.close();
+                is.close();
+                con.disconnect();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (ProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+        }
             return result;
         }
 
         @Override
         protected void onPostExecute(String[] s) {
             super.onPostExecute(s);
-            JSONArray ja = null;
-            Log.e("pie data", s[0]+s[1]);
+            JSONArray ja = null, jaLineDebit = null, jaLineCredit = null;
+            Log.e("pie data", s[0]+s[1]+s[2]);
             if (type == null) {
                 if (dialog.isShowing()) {
                     dialog.dismiss();
@@ -357,6 +393,10 @@ public class SummaryFragment extends Fragment {
                     Transfer = Float.valueOf(jo1.getString("Transfer"));
                     JSONObject joBar = new JSONObject(s[1]);
                     ja = joBar.getJSONArray("result");
+                    JSONObject joLine = new JSONObject(s[2]);
+                    jaLineDebit = joLine.getJSONArray("result");
+                    jaLineCredit = joLine.getJSONArray("resultcredit");
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -370,11 +410,32 @@ public class SummaryFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                ArrayList<Entry> e1 = new ArrayList<Entry>();
+                ArrayList<Entry> e2 = new ArrayList<Entry>();
+                int debitTotal = 0;
+                for (int i = 0; i < 12; i++) {
+                    try {
+                        if(Integer.valueOf(jaLineDebit.getString(i))>0)
+                            debitTotal = 1;
+                        e1.add(new Entry(i+1, Integer.valueOf(jaLineDebit.getString(i))));
+                        e2.add(new Entry(i+1, Integer.valueOf(jaLineCredit.getString(i))));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
                 list.add(new BarChartItem(generateDataBar(l), getActivity().getApplicationContext()));
                 list.add(new PieChartItem(generateDataPie(FD, DD, Cheque, Transfer), getActivity().getApplicationContext()));
-                list.add(new LineChartItem(generateDataLine(1), getActivity().getApplicationContext()));
-                SummaryFragment.ChartDataAdapter cda = new SummaryFragment.ChartDataAdapter(getActivity().getApplicationContext(), list);
-                lv.setAdapter(cda);
+                list.add(new LineChartItem(generateDataLine(e1, e2), getActivity().getApplicationContext()));
+                if(debitTotal == 1) {
+                    Log.e("Adapter Status", "Data present");
+                    SummaryFragment.ChartDataAdapter cda = new SummaryFragment.ChartDataAdapter(getActivity().getApplicationContext(), list);
+                    lv.setAdapter(cda);
+                }
+                else{
+                    mSwipeRefresh.setVisibility(View.GONE);
+                    lv.setVisibility(View.GONE);
+                    empty.setVisibility(View.VISIBLE);
+                }
             }
         }
     }

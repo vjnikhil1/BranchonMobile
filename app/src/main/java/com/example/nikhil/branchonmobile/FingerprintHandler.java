@@ -502,8 +502,8 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
                     }
                 }
                 file = new File(fileDir +"/"+ timeStamp + ".pdf");
-                String val = "Jordan Bank";
-                String subTit = "\nJordan Bank Ltd.                                                                                                                                  VALID FOR SIX MONTHS ONLY";
+                String val = "First Bank ";
+                String subTit = "\nFirst Bank Ltd.                                                                                                                                   VALID FOR SIX MONTHS ONLY";
                 String details = "\n\n             (ISSUING BRANCH)                             BANK AND BRANCH CODE                      DD NO.                                        DATE:                    ";
                 String details0 = "\n                   Hyderabad                                                       229      DE                                         6787654334                              "+dateFormat.format(date);
                 String details1 = "\n\n             ON DEMAND PAY";

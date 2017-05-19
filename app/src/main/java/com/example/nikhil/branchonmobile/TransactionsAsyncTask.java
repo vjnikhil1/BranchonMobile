@@ -134,6 +134,10 @@ public class TransactionsAsyncTask extends AsyncTask<String, Void, String> {
                 if(totArray.isEmpty()){
                     Log.e("No Transactions",s);
                     TextView noTrans = (TextView) a.getActivity().findViewById(R.id.noTrans);
+                    recyclerView = (RecyclerView) a.getActivity().findViewById(R.id.recyclerView2);
+                    SwipeRefreshLayout mSwipeRefresh = (SwipeRefreshLayout) a.getActivity().findViewById(R.id.transaction_refresh);
+                    mSwipeRefresh.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.GONE);
                     noTrans.setVisibility(View.VISIBLE);
                 }
                 recyclerView = (RecyclerView) a.getActivity().findViewById(R.id.recyclerView2);

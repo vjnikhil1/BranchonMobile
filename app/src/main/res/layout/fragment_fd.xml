@@ -53,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="number"
         android:layout_gravity="center"
         android:hint="Period(In seconds for demo purposes)"
         android:id="@+id/editText16" />
@@ -80,6 +80,7 @@
         android:layout_height="wrap_content"
         android:hint="Amount"
         android:ems="10"
+        android:inputType="number"
         android:layout_gravity="center"
         android:id="@+id/famount"/>
     </android.support.design.widget.TextInputLayout>

@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Registration extends AppCompatActivity {
     private Button register;
@@ -80,10 +82,43 @@ public class Registration extends AppCompatActivity {
                         ver.get(i).setError("Field is mandatory");
                         flag = 0;
                     }
+                    else if(ver.get(i).getText().toString().trim().length()>0) {
+                        if(i==3) {
+                            if(!ver.get(i).getText().toString().trim().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
+                                ver.get(i).setError("Email must be of the format xxx@xxx.com");
+                            }
+                        }
+                        if(i==4) {
+                            if (ver.get(i).getText().toString().trim().length() < 10) {
+                                ver.get(i).setError("Phone number must be 10 digits");
+                            }
+                        }
+                        if(i==6) {
+                            if(!ver.get(i).getText().toString().trim().matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+-=;:',./<>?]).{8,20})")) {
+                                Log.e("password", ver.get(i).getText().toString().trim());
+                                ver.get(i).setError("Not a valid password. Must contain atleast\n" +
+                                        "-One number\n" +
+                                        "-One uppercase letter\n" +
+                                        "-One special character\n" +
+                                        "-Length >= 8 characters");
+                            }
+                        }
+                        if(i==7)  {
+                            if(!ver.get(i).getText().toString().trim().matches("[A-Z]{5}[0-9]{4}[A-Z]{1}")) {
+                                ver.get(i).setError("Is not a valid PAN Number\n Format is ABCDE1234F");
+                            }
+                        }
+                        if(i==8)  {
+                            if(ver.get(i).getText().toString().trim().length()<12) {
+                                ver.get(i).setError("Aadhaar number length is 12 digits");
+                            }
+                        }
+                    }
                     else if(img==null||aadhaarImg==null||signatureImg==null) {
                         Toast.makeText(Registration.this, "Please check whether all the images are properly uploaded",
                                 Toast.LENGTH_LONG).show();
                         flag = 0;
+
                     }
                 }
                 if(flag==1){

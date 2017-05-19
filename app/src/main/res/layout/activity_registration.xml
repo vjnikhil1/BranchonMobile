@@ -65,8 +65,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
                     android:ems="10"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:hint="First Name"
-                    android:inputType="textPersonName" />
+                    android:inputType="textCapWords" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -74,9 +75,10 @@
                 android:layout_height="wrap_content">
                 <EditText
                     android:layout_width="match_parent"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapWords"
                     android:ems="10"
                     android:id="@+id/editText6"
                     android:hint="Last Name" />
@@ -157,7 +159,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="textPersonName"
+                    android:inputType="textCapCharacters"
                     android:ems="10"
                     android:id="@+id/editText11"
                     android:hint="PAN Number" />
@@ -189,7 +191,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPersonName"
+                    android:inputType="number"
                     android:ems="10"
                     android:id="@+id/editText12"
                     android:hint="Aadhaar Number" />

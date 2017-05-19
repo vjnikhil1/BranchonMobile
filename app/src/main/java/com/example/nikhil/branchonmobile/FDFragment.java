@@ -61,6 +61,12 @@ public class FDFragment extends Fragment {
         sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(time.getText().toString().isEmpty()||amount.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Enter all the fields", Toast.LENGTH_LONG).show();
+                }
+                else if(Integer.valueOf(amount.getText().toString())<=0) {
+                    Toast.makeText(getContext(), "Enter a valid amount", Toast.LENGTH_LONG).show();
+                }
                 FDAsync fa = new FDAsync(getContext());
                 fa.execute(amount.getText().toString());
                 Toast.makeText(getContext(), "FD Successfully Created", Toast.LENGTH_LONG).show();

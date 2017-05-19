@@ -82,13 +82,18 @@ public class TransferFundsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), FingerprintActivity.class);
-                pref = getActivity().getSharedPreferences("BOM", 0);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("printLoc", "transfer");
-                editor.putString("rec", rec.getText().toString());
-                editor.putString("amount", amount.getText().toString());
-                editor.commit();
-                getContext().startActivity(intent);
+                if(Integer.valueOf(amount.getText().toString())<=0) {
+                    Toast.makeText(getContext(), "Invalid amount", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    pref = getActivity().getSharedPreferences("BOM", 0);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("printLoc", "transfer");
+                    editor.putString("rec", rec.getText().toString());
+                    editor.putString("amount", amount.getText().toString());
+                    editor.commit();
+                    getContext().startActivity(intent);
+                }
             }
         });
         return view;

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -59,13 +60,22 @@ public class DDFragment extends Fragment {
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putString("printLoc","DD");
-                editor.putString("DDPay", payable.getText().toString());
-                editor.putString("DDAmount", amount.getText().toString());
-                editor.putString("DDAmountWord", amountWord.getText().toString());
-                editor.commit();
-                Intent intent = new Intent(getContext(), FingerprintActivity.class);
-                startActivity(intent);
+                if(payable.getText().toString().isEmpty()||amount.getText().toString().isEmpty()
+                        ||amountWord.getText().toString().isEmpty()) {
+                    Toast.makeText(getContext(), "Enter all the fields", Toast.LENGTH_LONG).show();
+                }
+                else if(Integer.valueOf(amount.getText().toString())<=0) {
+                    Toast.makeText(getContext(), "Enter a valid amount", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    editor.putString("printLoc", "DD");
+                    editor.putString("DDPay", payable.getText().toString());
+                    editor.putString("DDAmount", amount.getText().toString());
+                    editor.putString("DDAmountWord", amountWord.getText().toString());
+                    editor.commit();
+                    Intent intent = new Intent(getContext(), FingerprintActivity.class);
+                    startActivity(intent);
+                }
             }
         });
         return view;
