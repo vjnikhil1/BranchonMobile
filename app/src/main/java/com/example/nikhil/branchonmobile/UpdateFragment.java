@@ -47,7 +47,7 @@ public class UpdateFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_update, container, false);
-        getActivity().setTitle("Update Details");
+//        getActivity().setTitle("Update Details");
         pref = getContext().getSharedPreferences("BOM", 0);
         final SharedPreferences.Editor editor = pref.edit();
         fname = (EditText)view.findViewById(R.id.editText5Update);

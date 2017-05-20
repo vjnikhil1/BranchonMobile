@@ -21,12 +21,14 @@ public class PieChartItem extends ChartItem {
 
     private Typeface mTf;
     private SpannableString mCenterText;
+    private Context context;
 
     public PieChartItem(ChartData<?> cd, Context c) {
         super(cd);
 
         mTf = Typeface.createFromAsset(c.getAssets(), "OpenSans-Regular.ttf");
         mCenterText = generateCenterText();
+        context = c;
     }
 
     @Override
@@ -89,11 +91,11 @@ public class PieChartItem extends ChartItem {
     private SpannableString generateCenterText() {
         SpannableString s = new SpannableString("Types of expenditure\nLast\n 30 Days");
         s.setSpan(new RelativeSizeSpan(1.6f), 0, 20, 0);
-        s.setSpan(new ForegroundColorSpan(ColorTemplate.VORDIPLOM_COLORS[0]), 0, 20, 0);
+        s.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 0, 20, 0);
         s.setSpan(new RelativeSizeSpan(.9f), 20, 25, 0);
-        s.setSpan(new ForegroundColorSpan(Color.GRAY), 20, 25, 0);
+        s.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 20, 25, 0);
         s.setSpan(new RelativeSizeSpan(1.4f), 25, s.length(), 0);
-        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), 25, s.length(), 0);
+        s.setSpan(new ForegroundColorSpan(Color.parseColor("#009688")), 25, s.length(), 0);
         return s;
     }
 

@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:padding="20dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.example.nikhil.branchonmobile.FDFragment">
+    tools:context="com.example.nikhil.branchonmobile.FDFragment"
+    android:background="@android:color/white">
 
     <!-- TODO: Update blank fragment layout -->
 

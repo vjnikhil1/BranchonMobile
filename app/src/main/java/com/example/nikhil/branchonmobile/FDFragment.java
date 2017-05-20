@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,7 @@ import java.util.Random;
 public class FDFragment extends Fragment {
     private EditText time, amount, password;
     private Button sub;
+    private FloatingActionButton fab;
 
 
     public FDFragment() {
@@ -54,11 +56,12 @@ public class FDFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fd, container, false);
-        getActivity().setTitle("Fixed Deposit");
+//        getActivity().setTitle("Fixed Deposit");
         time = (EditText) view.findViewById(R.id.editText16);
         amount = (EditText) view.findViewById(R.id.famount);
         password = (EditText) view.findViewById(R.id.password);
         sub = (Button) view.findViewById(R.id.button7);
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.floatingActionButton1);
         sub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +76,17 @@ public class FDFragment extends Fragment {
                     FDAsync fa = new FDAsync(getContext());
                     fa.execute(amount.getText().toString(), password.getText().toString());
                 }
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fab.hide();
+                getActivity().getFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_home, new FDListFragment())
+                        .addToBackStack("8")
+                        .commit();
             }
         });
         return view;

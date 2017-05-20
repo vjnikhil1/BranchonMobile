@@ -74,7 +74,7 @@ public class TransferFundsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_transfer_funds, container, false);
-        getActivity().setTitle("Transfer Funds");
+//        getActivity().setTitle("Transfer Funds");
         rec = (EditText) view.findViewById(R.id.editTextReceiver);
         amount = (EditText) view.findViewById(R.id.amount);
         send = (Button) view.findViewById(R.id.transfer);

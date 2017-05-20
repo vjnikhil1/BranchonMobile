@@ -50,13 +50,15 @@ public class HomeActivity extends AppCompatActivity
     private TextView accName;
     private TextView accNo;
     SharedPreferences pref;
-    FloatingActionButton fab;
+    FloatingActionButton fab, fab1;
     private NetworkChangeReceiver networkChangeReceiver;
     private PaymentParams mPaymentParams;
 
     // This sets the configuration
     private PayuConfig payuConfig;
     private String merchantKey, userCredentials, s;
+    NavigationView nv;
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +67,13 @@ public class HomeActivity extends AppCompatActivity
         networkChangeReceiver = new NetworkChangeReceiver(this);
         registerReceiver(networkChangeReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         fab = (FloatingActionButton) findViewById(R.id.floatingActionButton);
-        NavigationView nv = (NavigationView) findViewById(R.id.nav_view);
+        fab1 = (FloatingActionButton) findViewById((R.id.floatingActionButton1));
+        nv = (NavigationView) findViewById(R.id.nav_view);
         nv.setItemIconTintList(null);
         View header = nv.getHeaderView(0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setLogo(R.mipmap.ic_launcher_no_background);
         accName = (TextView) header.findViewById(R.id.accName);
         accNo = (TextView) header.findViewById(R.id.accNo);
         pref = getSharedPreferences("BOM", 0);
@@ -90,7 +94,7 @@ public class HomeActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         onNavigationItemSelected(navigationView.getMenu().getItem(0).setChecked(true));
         /*DashboardFragment db = new DashboardFragment();
@@ -103,7 +107,7 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if(getFragmentManager().getBackStackEntryCount() == 1){
             AlertDialog.Builder ab = new AlertDialog.Builder(this);
             ab.setTitle("Are you sure?");
             ab.setMessage("Please click on Ok to exit");
@@ -124,6 +128,51 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
             ab.show();
+        }
+        else{
+            FragmentManager fm = getFragmentManager();
+            String stackName = null;
+            int entry;
+            for(entry = 0; entry < fm.getBackStackEntryCount()-1; entry++){
+                stackName = fm.getBackStackEntryAt(entry).getName();
+                Log.i("BC", "stackEntry" + entry);
+            }
+            Log.i("current", "stackEntry" + fm.getBackStackEntryAt(entry).getName());
+            if(fm.getBackStackEntryAt(entry).getName().equals("5")){
+                fab.hide();
+                Log.i("back cheque", stackName);
+            }
+            if(fm.getBackStackEntryAt(entry).getName().equals("3")){
+                fab1.hide();
+                Log.i("back fdlist", stackName);
+            }
+            if(stackName.equals("1")) {
+                navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
+            }
+            if(stackName.equals("2")) {
+                navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
+            }
+            if(stackName.equals("3")) {
+                navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
+            }
+            if(stackName.equals("4")) {
+                navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
+            }
+            if(stackName.equals("5")) {
+                fab.show();
+                navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
+            }
+            if(stackName.equals("6")) {
+                navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
+            }
+            if(stackName.equals("7")) {
+                navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
+            }
+            if(stackName.equals("8")) {
+                fab1.show();
+                navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
+            }
+            super.onBackPressed();
         }
     }
 
@@ -169,47 +218,55 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.dashboard) {
             // Handle the camera action
             fab.hide();
+            fab1.hide();
             DashboardFragment db = new DashboardFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, db).commit();
+            fm.beginTransaction().replace(R.id.content_home, db).addToBackStack("1").commit();
         } else if (id == R.id.transfer_funds) {
             fab.hide();
+            fab1.hide();
             TransferFundsFragment tf = new TransferFundsFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, tf).commit();
+            fm.beginTransaction().replace(R.id.content_home, tf).addToBackStack("2").commit();
 
         } else if (id == R.id.fixed_deposit) {
             fab.hide();
+            fab1.show();
             FDFragment fd = new FDFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, fd).commit();
+            fm.beginTransaction().replace(R.id.content_home, fd).addToBackStack("3").commit();
 
         } else if (id == R.id.demand_draft) {
             fab.hide();
+            fab1.hide();
             DDFragment df = new DDFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, df).commit();
+            fm.beginTransaction().replace(R.id.content_home, df).addToBackStack("4").commit();
 
         } else if (id == R.id.process_cheque) {
             fab.show();
+            fab1.hide();
             ChequeFragment cf = new ChequeFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, cf).commit();
+            fm.beginTransaction().replace(R.id.content_home, cf).addToBackStack("5").commit();
 
         } else if (id == R.id.update_details) {
             fab.hide();
+            fab1.hide();
             UpdateFragment uf = new UpdateFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, uf).commit();
+            fm.beginTransaction().replace(R.id.content_home, uf).addToBackStack("6").commit();
 
         } else if (id == R.id.close) {
             fab.hide();
+            fab1.hide();
             CloseFragment cf = new CloseFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, cf).commit();
+            fm.beginTransaction().replace(R.id.content_home, cf).addToBackStack("7").commit();
 
         } else if (id == R.id.logout) {
             Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
         }
 

@@ -8,7 +8,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context="com.example.nikhil.branchonmobile.DDFragment">
+    tools:context="com.example.nikhil.branchonmobile.DDFragment"
+    android:background="@android:color/white">
 
     <!-- TODO: Update blank fragment layout -->
 
