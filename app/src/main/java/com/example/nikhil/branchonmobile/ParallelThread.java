@@ -265,9 +265,9 @@ class ParallelThread extends AsyncTask<String, Void, String> {
             while(res.moveToNext()){
                 Log.e("Cloud Push", res.getString(0)+res.getString(1));
                 FingerprintHandler fh = new FingerprintHandler(a.getContext());
-                FingerprintHandler.TransferAsync ta = fh.new TransferAsync(a.getContext());
+                FingerprintHandler.TransferAsync ta = fh.new TransferAsync(a.getContext(), "FD");
                 ta.execute("FD",    ((Integer.parseInt(res.getString(1)))+
-                        (Integer.parseInt(res.getString(0))*(Integer.parseInt(res.getString(1))/100)))+"");
+                        (Integer.parseInt(res.getString(0))*(Integer.parseInt(res.getString(1))/100)))+"", "FD");
             }
             db.dropTable();
             Log.e("balance", s);

@@ -210,8 +210,6 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.logout) {
             Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.putExtra("EXIT", true);
             startActivity(intent);
         }
 

@@ -32,7 +32,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setContentTitle("Branch on Mobile")
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                 .setSmallIcon(R.drawable.ic_menu_send)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher))
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher_no_background))
                 .setSound(uri)
                 .setContentIntent(pendingIntent);
         builder.setDefaults(Notification.DEFAULT_VIBRATE);

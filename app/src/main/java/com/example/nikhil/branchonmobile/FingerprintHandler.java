@@ -151,10 +151,15 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
     class TransferAsync extends AsyncTask<String,Void,String> {
         Context c;
         ProgressDialog dialog;
-        String result;
+        String result, type;
         TransferAsync(Context c){
             this.c = c;
             dialog = new ProgressDialog(c);
+        }
+        TransferAsync(Context c, String type){
+            this.c = c;
+            dialog = new ProgressDialog(c);
+            this.type = type;
         }
         @Override
         protected String doInBackground(String... params) {
@@ -207,17 +212,21 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 
         @Override
         protected void onPreExecute() {
-            dialog.setMessage("Please Wait");
-            dialog.setCancelable(false);
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
+            if(type == null) {
+                dialog.setMessage("Please Wait");
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+            }
         }
 
         @Override
         protected void onPostExecute(String s) {
             try {
-                if(dialog.isShowing()&&dialog!=null)
-                    dialog.dismiss();
+                if(type == null) {
+                    if (dialog.isShowing() && dialog != null)
+                        dialog.dismiss();
+                }
             }
             catch (Exception e){
                 e.printStackTrace();
