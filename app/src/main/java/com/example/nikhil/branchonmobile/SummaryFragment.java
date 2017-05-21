@@ -150,6 +150,8 @@ public class SummaryFragment extends Fragment {
         LineDataSet d1 = new LineDataSet(e1, "Debits - Past 12 days");
         d1.setLineWidth(2.5f);
         d1.setCircleRadius(4.5f);
+        d1.setColor(Color.parseColor("#F44336"));
+        d1.setCircleColor(Color.parseColor("#F44336"));
         d1.setHighLightColor(Color.rgb(244, 117, 117));
         d1.setDrawValues(false);
 

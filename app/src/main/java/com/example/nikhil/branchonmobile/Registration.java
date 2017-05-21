@@ -86,11 +86,13 @@ public class Registration extends AppCompatActivity {
                         if(i==3) {
                             if(!ver.get(i).getText().toString().trim().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
                                 ver.get(i).setError("Email must be of the format xxx@xxx.com");
+                                flag = 0;
                             }
                         }
                         if(i==4) {
                             if (ver.get(i).getText().toString().trim().length() < 10) {
                                 ver.get(i).setError("Phone number must be 10 digits");
+                                flag = 0;
                             }
                         }
                         if(i==6) {
@@ -101,20 +103,24 @@ public class Registration extends AppCompatActivity {
                                         "-One uppercase letter\n" +
                                         "-One special character\n" +
                                         "-Length >= 8 characters");
+                                flag = 0;
                             }
                         }
                         if(i==7)  {
                             if(!ver.get(i).getText().toString().trim().matches("[A-Z]{5}[0-9]{4}[A-Z]{1}")) {
                                 ver.get(i).setError("Is not a valid PAN Number\n Format is ABCDE1234F");
+                                flag = 0;
                             }
                         }
                         if(i==8)  {
                             if(ver.get(i).getText().toString().trim().length()<12) {
                                 ver.get(i).setError("Aadhaar number length is 12 digits");
+                                flag = 0;
                             }
                         }
                     }
-                    else if(img==null||aadhaarImg==null||signatureImg==null) {
+                    else if(img==null||aadhaarImg==null||signatureImg[0]==null
+                            ||signatureImg[1]==null||signatureImg[2]==null) {
                         Toast.makeText(Registration.this, "Please check whether all the images are properly uploaded",
                                 Toast.LENGTH_LONG).show();
                         flag = 0;
@@ -227,7 +233,10 @@ public class Registration extends AppCompatActivity {
         //Log.e("x",""+resultCode);
         if (requestCode == 1 && resultCode == RESULT_OK) {
                 Uri uri;
-                if (data.getData() == null) {
+                if(data == null){
+                    uri = photoURI;
+                }
+                else if (data.getData() == null) {
                     uri = photoURI;
                 }
                 else{
@@ -248,7 +257,7 @@ public class Registration extends AppCompatActivity {
                     TextView panStatus = (TextView) findViewById(R.id.textView);
                     panStatus.setText("Upload Success");
                     panStatus.setTextColor(Color.parseColor("#4CAF50"));
-                    //Log.e("yo", img);
+                    Log.e("yo", img);
                     //ImageView iv = (ImageView) findViewById(R.id.imageView);
                     //iv.setImageBitmap(b);
                 } catch (IOException e) {
@@ -268,7 +277,10 @@ public class Registration extends AppCompatActivity {
         }
         if (requestCode == 2 && resultCode == RESULT_OK) {
             Uri uri;
-            if (data.getData() == null) {
+            if(data == null){
+                uri = photoURI;
+            }
+            else if (data.getData() == null) {
                 uri = photoURI;
             }
             else{
@@ -304,7 +316,10 @@ public class Registration extends AppCompatActivity {
         }
         if (requestCode == 3 && resultCode == RESULT_OK) {
             Uri uri;
-            if (data.getData() == null) {
+            if(data == null){
+                uri = photoURI;
+            }
+            else if (data.getData() == null) {
                 uri = photoURI;
             }
             else{

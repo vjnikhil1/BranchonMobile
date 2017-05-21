@@ -2,9 +2,11 @@ package com.example.nikhil.branchonmobile;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,7 +18,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -458,12 +462,31 @@ public class FingerprintHandler extends FingerprintManager.AuthenticationCallbac
 
         @Override
         protected void onPostExecute(String s) {
+            if(pd.isShowing())
+                pd.dismiss();
             if(s.equals("1")) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setDataAndType(FileProvider.getUriForFile(c, "com.example.nikhil.branchonmobile", file), "application/pdf");
-                i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-                i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                c.startActivity(i);
+                AlertDialog.Builder ab = new AlertDialog.Builder(c);
+                ab.setCancelable(false);
+                ab.setTitle("DD Generated");
+                ab.setMessage("Do you want to view the DD now?");
+                AlertDialog ad = ab.create();
+                ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setDataAndType(FileProvider.getUriForFile(c, "com.example.nikhil.branchonmobile", file), "application/pdf");
+                        i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                        i.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        c.startActivity(i);
+                    }
+                });
+                ab.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ((FingerprintActivity)c).finish();
+                    }
+                });
+                ab.show();
             }
             else if(s.equals("Please check your transaction password")) {
                 Toast.makeText(c, "Failed!"+s, Toast.LENGTH_LONG).show();

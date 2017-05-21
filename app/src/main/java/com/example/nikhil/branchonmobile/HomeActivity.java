@@ -1,6 +1,7 @@
 package com.example.nikhil.branchonmobile;
 
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -107,7 +108,7 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else if(getFragmentManager().getBackStackEntryCount() == 1){
+        } else if(getFragmentManager().findFragmentById(R.id.content_home) instanceof DashboardFragment){
             AlertDialog.Builder ab = new AlertDialog.Builder(this);
             ab.setTitle("Are you sure?");
             ab.setMessage("Please click on Ok to exit");
@@ -131,7 +132,19 @@ public class HomeActivity extends AppCompatActivity
         }
         else{
             FragmentManager fm = getFragmentManager();
-            String stackName = null;
+            Fragment f = fm.findFragmentById(R.id.content_home);
+            if(f instanceof TransferFundsFragment||f instanceof ChequeFragment||f instanceof FDFragment
+                    ||f instanceof DDFragment||f instanceof UpdateFragment||f instanceof CloseFragment) {
+                Log.e("fragment name", "Yolo");
+                if(f instanceof ChequeFragment) {
+                    fab.hide();
+                } else if(f instanceof FDFragment) {
+                    fab1.hide();
+                }
+                navigationView.getMenu().getItem(Integer.valueOf(0)).setChecked(true);
+                fm.beginTransaction().replace(R.id.content_home, new DashboardFragment()).commit();
+            }
+/*            String stackName = null;
             int entry;
             for(entry = 0; entry < fm.getBackStackEntryCount()-1; entry++){
                 stackName = fm.getBackStackEntryAt(entry).getName();
@@ -150,29 +163,41 @@ public class HomeActivity extends AppCompatActivity
                 navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
             }
             if(stackName.equals("2")) {
+                getFragmentManager().beginTransaction().replace(R.id.content_home, new DashboardFragment())
+                        .addToBackStack("1").commit();
                 navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
             }
             if(stackName.equals("3")) {
+                getFragmentManager().beginTransaction().replace(R.id.content_home, new DashboardFragment())
+                        .addToBackStack("1").commit();
                 navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
             }
             if(stackName.equals("4")) {
+                getFragmentManager().beginTransaction().replace(R.id.content_home, new DashboardFragment())
+                        .addToBackStack("1").commit();
                 navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
             }
             if(stackName.equals("5")) {
                 fab.show();
+                getFragmentManager().beginTransaction().replace(R.id.content_home, new DashboardFragment())
+                        .addToBackStack("1").commit();
                 navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
             }
             if(stackName.equals("6")) {
+                getFragmentManager().beginTransaction().replace(R.id.content_home, new DashboardFragment())
+                        .addToBackStack("1").commit();
                 navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
             }
             if(stackName.equals("7")) {
+                getFragmentManager().beginTransaction().replace(R.id.content_home, new DashboardFragment())
+                        .addToBackStack("1").commit();
                 navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
             }
             if(stackName.equals("8")) {
                 fab1.show();
                 navigationView.getMenu().getItem(Integer.valueOf(stackName)-1).setChecked(true);
-            }
-            super.onBackPressed();
+            }*/
+//            super.onBackPressed();
         }
     }
 
@@ -221,48 +246,48 @@ public class HomeActivity extends AppCompatActivity
             fab1.hide();
             DashboardFragment db = new DashboardFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, db).addToBackStack("1").commit();
+            fm.beginTransaction().replace(R.id.content_home, db).commit();
         } else if (id == R.id.transfer_funds) {
             fab.hide();
             fab1.hide();
             TransferFundsFragment tf = new TransferFundsFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, tf).addToBackStack("2").commit();
+            fm.beginTransaction().replace(R.id.content_home, tf).commit();
 
         } else if (id == R.id.fixed_deposit) {
             fab.hide();
             fab1.show();
             FDFragment fd = new FDFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, fd).addToBackStack("3").commit();
+            fm.beginTransaction().replace(R.id.content_home, fd).commit();
 
         } else if (id == R.id.demand_draft) {
             fab.hide();
             fab1.hide();
             DDFragment df = new DDFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, df).addToBackStack("4").commit();
+            fm.beginTransaction().replace(R.id.content_home, df).commit();
 
         } else if (id == R.id.process_cheque) {
             fab.show();
             fab1.hide();
             ChequeFragment cf = new ChequeFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, cf).addToBackStack("5").commit();
+            fm.beginTransaction().replace(R.id.content_home, cf).commit();
 
         } else if (id == R.id.update_details) {
             fab.hide();
             fab1.hide();
             UpdateFragment uf = new UpdateFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, uf).addToBackStack("6").commit();
+            fm.beginTransaction().replace(R.id.content_home, uf).commit();
 
         } else if (id == R.id.close) {
             fab.hide();
             fab1.hide();
             CloseFragment cf = new CloseFragment();
             FragmentManager fm = getFragmentManager();
-            fm.beginTransaction().replace(R.id.content_home, cf).addToBackStack("7").commit();
+            fm.beginTransaction().replace(R.id.content_home, cf).commit();
 
         } else if (id == R.id.logout) {
             Intent intent = new Intent(HomeActivity.this, MainActivity.class);
@@ -285,10 +310,10 @@ public class HomeActivity extends AppCompatActivity
         ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(amount.getText().toString()!=null)
+                if(amount.getText().toString()!=null && Integer.valueOf(amount.getText().toString())<=0)
                     navigateToBaseActivity(amount.getText().toString());
                 else
-                    Toast.makeText(getApplication(), "Enter an amount", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplication(), "Enter a valid amount", Toast.LENGTH_LONG).show();
             }
         });
         ab.setNegativeButton("No", new DialogInterface.OnClickListener() {
