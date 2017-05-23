@@ -86,16 +86,16 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
         TextView tv1 = (TextView) view.findViewById(R.id.textView18);
         TextView tv2 = (TextView) view.findViewById(R.id.textView20);
         TextView tv3 = (TextView) view.findViewById(R.id.textView22);
-            if (output[1] != null)
-                tv1.setText(output[3]);
             if (output[3] != null)
+                tv1.setText(output[3]);
+            if (output[1] != null)
                 tv2.setText(output[1]);
             if (output[2] != null)
                 tv3.setText(output[2]);
             ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if(!("0"+output[1]).equals(pref.getString("accNo", null)))
+                    if(!(output[1]).equals(pref.getString("accNo", null)))
                     {
                         Toast.makeText(activity.getApplicationContext(),"This cheque isn't issued to you", Toast.LENGTH_LONG).show();
                     }
@@ -131,9 +131,9 @@ public class AsyncProcessTask extends AsyncTask<String, String, Boolean> {
                     // http://ocrsdk.com/documentation/faq/#faq3
 
                     // Name of application you created
-                    restClient.applicationId = "BonMobile";
+                    restClient.applicationId = "FirstBank";
             // You should get e-mail from ABBYY Cloud OCR SDK service with the application password
-            restClient.password = "NrD6rWu1eCpYB5M3vW5CG4Rt";
+            restClient.password = "5uh5mb8PI37UsbmiMtjzm3w+";
 
             publishProgress( "Uploading image...");
 

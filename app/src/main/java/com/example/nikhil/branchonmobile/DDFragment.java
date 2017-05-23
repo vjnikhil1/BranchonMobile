@@ -23,6 +23,8 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -58,6 +60,26 @@ public class DDFragment extends Fragment {
         generate = (Button) view.findViewById(R.id.buttonDD);
         amountWord = (EditText) view.findViewById(R.id.editText15);
         password = (EditText) view.findViewById(R.id.password);
+        amount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    if(!amount.getText().toString().equals("")) {
+                        if(Integer.valueOf(amount.getText().toString())>0) {
+                            if(Integer.valueOf(amount.getText().toString())>1000000){
+                                Toast.makeText(getContext(), "Only a maximum transaction of 1000000 can be done at a time"
+                                ,Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                NumToWords numToWords = new NumToWords();
+                                amountWord.setText(WordUtils.capitalizeFully(numToWords.convert(
+                                        Integer.valueOf(amount.getText().toString()))) + " Rupees");
+                            }
+                        }
+                    }
+                }
+            }
+        });
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -71,10 +93,14 @@ public class DDFragment extends Fragment {
                 else {
                     editor.putString("printLoc", "DD");
                     editor.putString("DDPay", payable.getText().toString());
-                    editor.putString("DDAmount", amount.getText().toString());
+                    editor.putString("DDAmount", Integer.valueOf(amount.getText().toString()).toString());
                     editor.putString("DDAmountWord", amountWord.getText().toString());
                     editor.putString("password", password.getText().toString());
                     editor.commit();
+                    amount.setText("");
+                    payable.setText("");
+                    amountWord.setText("");
+                    password.setText("");
                     Intent intent = new Intent(getContext(), FingerprintActivity.class);
                     startActivity(intent);
                 }

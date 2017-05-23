@@ -90,14 +90,21 @@ public class TransferFundsFragment extends Fragment {
                 else if(Integer.valueOf(amount.getText().toString())<=0) {
                     Toast.makeText(getContext(), "Invalid amount", Toast.LENGTH_LONG).show();
                 }
+                else if(Integer.valueOf(amount.getText().toString())>1000000){
+                    Toast.makeText(getContext(), "Only a maximum transaction of 1000000 can be done at a time"
+                            ,Toast.LENGTH_LONG).show();
+                }
                 else {
                     pref = getActivity().getSharedPreferences("BOM", 0);
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString("printLoc", "transfer");
                     editor.putString("rec", rec.getText().toString());
-                    editor.putString("amount", amount.getText().toString());
+                    editor.putString("amount", Integer.valueOf(amount.getText().toString()).toString());
                     editor.putString("password", password.getText().toString());
                     editor.commit();
+                    amount.setText("");
+                    rec.setText("");
+                    password.setText("");
                     getContext().startActivity(intent);
                 }
             }

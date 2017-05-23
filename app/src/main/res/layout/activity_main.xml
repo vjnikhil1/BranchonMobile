@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="30dp"
         android:layout_marginRight="15dp"
         android:orientation="horizontal">
 
@@ -103,10 +103,19 @@
         android:theme="@style/MyButton"/>
 
     <TextView
+        android:id="@+id/textView33"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="Forgot Password?" />
+
+    <TextView
         android:text="Do not have an account? Click here to register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="16dp"
         android:id="@+id/textView3"
         android:clickable="true"
         android:layout_gravity="center"

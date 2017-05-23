@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -32,6 +33,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class UpdateFragment extends Fragment {
@@ -62,16 +65,53 @@ public class UpdateFragment extends Fragment {
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editor.putString("printLoc", "update");
-                editor.putString("lname", lname.getText().toString());
-                editor.putString("fname", fname.getText().toString());
-                editor.putString("email", email.getText().toString());
-                editor.putString("phno", phno.getText().toString());
-                editor.putString("address", address.getText().toString());
-                editor.putString("password", password.getText().toString());
-                editor.commit();
-                Intent intent = new Intent(getContext(), FingerprintActivity.class);
-                getContext().startActivity(intent);
+                List<EditText> ver = Arrays.asList(fname,lname,email,phno,address,password);
+                int flag = 1;
+                //Toast.makeText(getApplicationContext(), rb.getText(), Toast.LENGTH_LONG).show();
+                for(int i=0;i<ver.size();i++){
+                    if(ver.get(i).getText().toString().trim().equals("")){
+                        Log.e("mand", i+"");
+                        ver.get(i).setError("Field is mandatory");
+                        flag = 0;
+                    }
+                    else if(ver.get(i).getText().toString().trim().length()>0) {
+                        if(i==2) {
+                            if(!ver.get(i).getText().toString().trim().matches("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+")) {
+                                ver.get(i).setError("Email must be of the format xxx@xxx.com");
+                                flag = 0;
+                            }
+                        }
+                        if(i==3) {
+                            if (ver.get(i).getText().toString().trim().length() < 10) {
+                                ver.get(i).setError("Phone number must be 10 digits");
+                                flag = 0;
+                            }
+                        }
+                        if(i==5) {
+                            if(!ver.get(i).getText().toString().trim().matches("((?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+-=;:',./<>?]).{8,20})")) {
+                                Log.e("password", ver.get(i).getText().toString().trim());
+                                ver.get(i).setError("Not a valid password. Must contain atleast\n" +
+                                        "-One number\n" +
+                                        "-One uppercase letter\n" +
+                                        "-One special character\n" +
+                                        "-Length >= 8 characters");
+                                flag = 0;
+                            }
+                        }
+                    }
+                }
+                if(flag == 1) {
+                    editor.putString("printLoc", "update");
+                    editor.putString("lname", lname.getText().toString());
+                    editor.putString("fname", fname.getText().toString());
+                    editor.putString("email", email.getText().toString());
+                    editor.putString("phno", phno.getText().toString());
+                    editor.putString("address", address.getText().toString());
+                    editor.putString("password", password.getText().toString());
+                    editor.commit();
+                    Intent intent = new Intent(getContext(), FingerprintActivity.class);
+                    getContext().startActivity(intent);
+                }
             }
         });
         return view;

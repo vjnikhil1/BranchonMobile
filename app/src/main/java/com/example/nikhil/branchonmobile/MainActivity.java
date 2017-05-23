@@ -25,7 +25,7 @@ import android.widget.Toast;
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView t1;
+    private TextView t1, forgot;
     private Button login;
     private EditText username,pass;
     private SharedPreferences pref;
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
         }
         t1 = (TextView) findViewById(R.id.textView3);
         username = (EditText) findViewById(R.id.editText);
+        forgot = (TextView) findViewById(R.id.textView33);
         if(!pref.getString("accNo","0").equals("0"))
             username.setText(pref.getString("accNo",null));
         pass = (EditText) findViewById(R.id.editText3);
@@ -71,6 +72,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ParallelThread p = new ParallelThread(MainActivity.this);
                 p.execute("login",username.getText().toString(),pass.getText().toString());
+            }
+        });
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, ForgotActivity.class);
+                startActivity(i);
             }
         });
     }

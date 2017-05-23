@@ -41,12 +41,11 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity"></activity>
         <activity
             android:name=".Registration"
-            android:label="@string/title_activity_registration"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_registration"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".HomeActivity"
@@ -71,7 +70,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Splash"
+        <activity
+            android:name=".Splash"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -79,6 +79,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ForgotActivity"></activity>
     </application>
 
 </manifest>

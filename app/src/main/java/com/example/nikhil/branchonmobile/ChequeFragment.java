@@ -120,7 +120,11 @@ public class ChequeFragment extends Fragment {
         String imgEncode;
         Uri uri;
         if(resultCode!=RESULT_CANCELED) {
-            if (data.getData() == null) {
+            if(data == null) {
+                uri = photoURI;
+                imgPath = mCurrentPhotoPath;
+            }
+            else if (data.getData() == null) {
                 uri = photoURI;
                 imgPath = mCurrentPhotoPath;
             } else {

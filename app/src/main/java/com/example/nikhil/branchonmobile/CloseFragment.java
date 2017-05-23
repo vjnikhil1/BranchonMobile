@@ -62,6 +62,9 @@ public class CloseFragment extends Fragment {
                 String reason = reasonText.getText().toString();
                 if(!accNoIn.equals(accNo))
                     Toast.makeText(view.getContext(),"Wrong Number Entered", Toast.LENGTH_SHORT).show();
+                else if(reason.isEmpty()){
+                    Toast.makeText(view.getContext(),"Enter a valid reason", Toast.LENGTH_SHORT).show();
+                }
                 else{
                     editor.putString("printLoc", "close");
                     editor.putString("accNoIn", accNoIn);

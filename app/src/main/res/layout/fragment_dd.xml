@@ -59,6 +59,7 @@
         android:layout_gravity="center"
         android:id="@+id/editText13"
         android:hint="Amount for DD"
+        android:maxLength="9"
         android:layout_below="@+id/textView17"
         android:layout_alignStart="@+id/editText14" />
     </android.support.design.widget.TextInputLayout>
@@ -114,6 +115,8 @@
         android:layout_height="wrap_content"
         android:inputType="textCapWords"
         android:hint="Amount in Words"
+        android:editable="false"
+        android:focusable="false"
         android:layout_gravity="center"
         android:ems="10"
         android:id="@+id/editText15"

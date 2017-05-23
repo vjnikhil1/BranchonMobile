@@ -26,6 +26,7 @@
 
         <ImageView
             android:id="@+id/imageView7"
+            android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/cheque" />
@@ -36,6 +37,8 @@
         android:id="@+id/textView16"
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginRight="25dp"
         android:textAlignment="center" />
         </LinearLayout>
 
@@ -45,4 +48,11 @@
         android:id="@+id/recyclerView"
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Sorry there are'nt any Cheques Deposited. Try one now!"
+        android:visibility="invisible"
+        android:id="@+id/noTransList"
+        android:gravity="center"/>
 </LinearLayout>

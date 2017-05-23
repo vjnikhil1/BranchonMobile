@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.itextpdf.text.pdf.StringUtils;
 import com.payu.india.Model.PaymentParams;
 import com.payu.india.Model.PayuConfig;
 import com.payu.india.Model.PayuHashes;
@@ -143,6 +144,11 @@ public class HomeActivity extends AppCompatActivity
                 }
                 navigationView.getMenu().getItem(Integer.valueOf(0)).setChecked(true);
                 fm.beginTransaction().replace(R.id.content_home, new DashboardFragment()).commit();
+            }
+            else if(f instanceof FDListFragment) {
+                fab1.show();
+                navigationView.getMenu().getItem(Integer.valueOf(2)).setChecked(true);
+                fm.beginTransaction().replace(R.id.content_home, new FDFragment()).commit();
             }
 /*            String stackName = null;
             int entry;
@@ -310,8 +316,8 @@ public class HomeActivity extends AppCompatActivity
         ab.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(amount.getText().toString()!=null && Integer.valueOf(amount.getText().toString())<=0)
-                    navigateToBaseActivity(amount.getText().toString());
+                if(amount.getText().toString()!=null && Integer.valueOf(amount.getText().toString())>0)
+                    navigateToBaseActivity(Integer.valueOf(amount.getText().toString()).toString());
                 else
                     Toast.makeText(getApplication(), "Enter a valid amount", Toast.LENGTH_LONG).show();
             }

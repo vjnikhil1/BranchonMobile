@@ -24,7 +24,7 @@ public class Guide extends AppIntro {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        addSlide(AppIntroFragment.newInstance("Welcome to 1B", "Many Paths. One Destination.", R.drawable.test, Color.parseColor("#29B6F6")));
+        addSlide(AppIntroFragment.newInstance("Welcome to 1B", "Many Paths. One Destination.", R.drawable.test, getColor(R.color.colorPrimary)));
         addSlide(AppIntroFragment.newInstance("All your transactions organized and summarized"
                 , "You can view your expenditure types, credits and debits, transactions, All at one place!"
                 , R.drawable.dashboard_large, getColor(R.color.colorPrimary)));

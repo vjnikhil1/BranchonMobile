@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,9 +73,13 @@ public class FDFragment extends Fragment {
                 else if(Integer.valueOf(amount.getText().toString())<=0) {
                     Toast.makeText(getContext(), "Enter a valid amount", Toast.LENGTH_LONG).show();
                 }
+                else if(Integer.valueOf(amount.getText().toString())>1000000){
+                    Toast.makeText(getContext(), "Only a maximum transaction of 1000000 can be done at a time"
+                            ,Toast.LENGTH_LONG).show();
+                }
                 else {
                     FDAsync fa = new FDAsync(getContext());
-                    fa.execute(amount.getText().toString(), password.getText().toString());
+                    fa.execute(amount.getText().toString(), password.getText().toString(), time.getText().toString());
                 }
             }
         });
@@ -115,6 +120,7 @@ public class FDFragment extends Fragment {
             String url_transfer = "http://52.33.154.120:8080/fdprocess.php";//"http://bom.pe.hu/transfer.php";
             String amount = params[0];
             String password = params[1];
+            String time = params[2];
             SharedPreferences pref = c.getSharedPreferences("BOM", 0);
             String accNo = pref.getString("accNo", null);
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -132,7 +138,8 @@ public class FDFragment extends Fragment {
                         URLEncoder.encode("date", "UTF-8") + "=" + URLEncoder.encode(df.format(obj), "UTF-8") + "&" +
                         URLEncoder.encode("time", "UTF-8") + "=" + URLEncoder.encode(df1.format(obj), "UTF-8") + "&" +
                         URLEncoder.encode("amount", "UTF-8") + "=" + URLEncoder.encode(amount, "UTF-8") + "&" +
-                        URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8");
+                        URLEncoder.encode("password", "UTF-8") + "=" + URLEncoder.encode(password, "UTF-8") + "&" +
+                        URLEncoder.encode("period", "UTF-8") + "=" + URLEncoder.encode(time, "UTF-8");
                 bufferedWriter.write(post);
                 bufferedWriter.flush();
                 bufferedWriter.close();
@@ -159,6 +166,7 @@ public class FDFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String s) {
+            Log.e("FD", s);
             super.onPostExecute(s);
             if (dialog.isShowing()) {
                 dialog.dismiss();
@@ -166,6 +174,9 @@ public class FDFragment extends Fragment {
             }
             if(s.equals("Please check your transaction password")){
                 Toast.makeText(c,s,Toast.LENGTH_LONG).show();
+                time.setText("");
+                amount.setText("");
+                password.setText("");
                 Intent i = new Intent(c, HomeActivity.class);
                 c.startActivity(i);
             }
@@ -173,13 +184,16 @@ public class FDFragment extends Fragment {
                 Toast.makeText(getContext(), "FD Successfully Created", Toast.LENGTH_LONG).show();
                 AlarmManager alarmManager = (AlarmManager) getContext().getSystemService(getContext().ALARM_SERVICE);
                 Intent notificationIntent = new Intent("android.media.action.DISPLAY_NOTIFICATION");
-                notificationIntent.putExtra("amount", amount.getText().toString());
+                notificationIntent.putExtra("amount", Integer.valueOf(amount.getText().toString()).toString());
                 notificationIntent.putExtra("period", time.getText().toString());
                 notificationIntent.addCategory("android.intent.category.DEFAULT");
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getContext(), new Random().nextInt(), notificationIntent, PendingIntent.FLAG_ONE_SHOT);
                 Calendar calendar = Calendar.getInstance();
                 calendar.add(Calendar.SECOND, Integer.parseInt(time.getText().toString()));
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                time.setText("");
+                amount.setText("");
+                password.setText("");
             }
         }
     }

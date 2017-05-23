@@ -91,6 +91,7 @@
         android:layout_below="@+id/editTextReceiver"
         android:layout_alignEnd="@+id/editTextReceiver"
         android:id="@+id/amount"
+        android:maxLength="9"
         android:hint="Amount" />
     </android.support.design.widget.TextInputLayout>
         </LinearLayout>

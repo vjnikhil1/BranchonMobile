@@ -9,6 +9,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -159,12 +161,20 @@ public class ChequeAsyncTask extends AsyncTask<String,Void,String> {
                     totArray.add(c);
 
                 }
-                recyclerView = (RecyclerView) a.getActivity().findViewById(R.id.recyclerView);
-                RecyclerView.LayoutManager lm = new LinearLayoutManager(c);
-                adapter = new ChequesAdapter(totArray);
-                recyclerView.setLayoutManager(lm);
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.setAdapter(adapter);
+                if(totArray.isEmpty()) {
+                    TextView emT = (TextView) a.getActivity().findViewById(R.id.noTransList);
+                    recyclerView = (RecyclerView) a.getActivity().findViewById(R.id.recyclerView);
+                    recyclerView.setVisibility(View.GONE);
+                    emT.setVisibility(View.VISIBLE);
+                }
+                else {
+                    recyclerView = (RecyclerView) a.getActivity().findViewById(R.id.recyclerView);
+                    RecyclerView.LayoutManager lm = new LinearLayoutManager(c);
+                    adapter = new ChequesAdapter(totArray);
+                    recyclerView.setLayoutManager(lm);
+                    recyclerView.setItemAnimator(new DefaultItemAnimator());
+                    recyclerView.setAdapter(adapter);
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
